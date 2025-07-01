@@ -200,4 +200,11 @@ body {
     bottom: 0;
     transform: translate(25px, 25px) scale(0.5);
   }
+  .edit-card {
+    border-radius: 0;
+    padding: 1.5rem;
+    padding-top: 4rem;
+    min-height: 100dvh;
+    margin-top: 0;
+  }
 }
