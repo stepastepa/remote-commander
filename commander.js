@@ -87,7 +87,9 @@ onAuthStateChanged(auth, async (user) => {
       // Документа нет — создаём его
       await setDoc(roomRef, {
         email: user.email || "",
-        message: 'Hello World!'
+        message: 'Hello World!',
+        bg: 'white',
+        mediaLink: ''
       });
       console.log("Создан профиль для нового пользователя");
       return; // Ждём следующего срабатывания onSnapshot
