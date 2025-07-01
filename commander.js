@@ -123,9 +123,13 @@ function addMedia(link) {
 ////////////////////////////////////////
 
 editBtn.addEventListener('click', () => {
+  toggleCommanderRoom();
+});
+
+function toggleCommanderRoom() {
   document.querySelector('.edit-card').classList.toggle('hidden');
   document.querySelector('.commander-card').classList.toggle('hidden');
-});
+}
 
 editForm.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -141,6 +145,8 @@ editForm.addEventListener('submit', async (e) => {
   } catch (err) {
     console.log(err.message);
   }
+
+  toggleCommanderRoom();
 });
 
 ///////////////////////
