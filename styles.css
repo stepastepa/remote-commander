@@ -181,6 +181,31 @@ body {
   align-self: center;
 }
 
+#bg-input-row {
+  display: flex;
+  gap: 0.5rem;;
+}
+
+.color-option {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .color-option input[type="radio"] {
+    display: none; /* скрываем стандартную радио кнопку */
+  }
+
+  .color-preview {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: none;
+  }
+
+  .color-option input[type="radio"]:checked + .color-preview {
+    border: 3px solid #333;
+  }
+
 @media (max-width: 512px) {
   .commander-card {
     width: 80vw;

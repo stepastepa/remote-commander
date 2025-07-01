@@ -30,12 +30,29 @@
         <input id="messageInput" type="text" name="message" />
       </div>
       <div class="form-group">
-        <label for="bgInput">Background:</label>
-        <input id="bgInput" type="text" name="bg" />
-      </div>
-      <div class="form-group">
         <label for="mediaLinkInput">Media Link:</label>
         <input id="mediaLinkInput" type="text" name="mediaLink" />
+      </div>
+      <div class="form-group">
+        <label>Background:</label>
+        <div id="bg-input-row">
+          <label class="color-option">
+            <input type="radio" name="bg" value="gold" checked/>
+            <div class="color-preview" style="background-color: gold;"></div>
+          </label>
+          <label class="color-option">
+            <input type="radio" name="bg" value="lightgreen" />
+            <div class="color-preview" style="background-color: lightgreen;"></div>
+          </label>
+          <label class="color-option">
+            <input type="radio" name="bg" value="pink" />
+            <div class="color-preview" style="background-color: pink;"></div>
+          </label>
+          <label class="color-option">
+            <input type="radio" name="bg" value="skyblue" />
+            <div class="color-preview" style="background-color: skyblue;"></div>
+          </label>
+        </div>
       </div>
       <button type="submit" class="btn">Update</button>
     </form>

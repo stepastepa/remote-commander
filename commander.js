@@ -111,7 +111,6 @@ onAuthStateChanged(auth, async (user) => {
     }
     // fill inputs fields
     messageInput.value = data.message || '';
-    bgInput.value = data.bg || '';
     mediaLinkInput.value = data.mediaLink || '';
   });
 });
