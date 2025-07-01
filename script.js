@@ -160,3 +160,14 @@ passwordInputReg.addEventListener('input', () => {
   passwordInputReg.closest('.incorrect').querySelector('.active-error').classList.remove('active-error');
   passwordInputReg.closest('.incorrect').classList.remove('incorrect');
 });
+
+/////////////////////////////////////////////
+//////////     secure redirect     //////////
+/////////////////////////////////////////////
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    window.location.href = './room.html';
+    return;
+  }
+});
