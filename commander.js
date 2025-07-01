@@ -109,6 +109,10 @@ onAuthStateChanged(auth, async (user) => {
     if(data.mediaLink) {
       addMedia(data.mediaLink);
     }
+    // fill inputs fields
+    messageInput.value = data.message || '';
+    bgInput.value = data.bg || '';
+    mediaLinkInput.value = data.mediaLink || '';
   });
 });
 
