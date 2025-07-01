@@ -129,18 +129,22 @@ body {
 /*//////////  Commander Room  //////////*/
 
 .commander-card {
-  grid-column: 1 / -1;
+  position: relative;
+  grid-column: 2 / -2;
   align-self: center;
   justify-self: center;
 
-  padding: 3rem;
+  width: 100%;
+  padding: 2rem;
   background-color: var(--white);
-  border-radius: 2rem;
-  box-shadow: 0 0 0 1px var(--light-border-color);
+  border-radius: 1.5rem 1.5rem 1.5rem 0;
+  /* box-shadow: 0 0 0 1px var(--light-border-color); */
 
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.5rem;
+
+  /* filter: drop-shadow(0 2px 0 hsla(45deg 50% 25% / 0.05)); */
 }
 
 .commander-card.hidden,
@@ -148,6 +152,52 @@ body {
   display: none;
 }
 
+.commander-card img {
+  border-radius: 0.5rem;
+  width: 100%;
+}
+
+.user-message {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.message-tail {
+  position: absolute;
+  left: -100px;
+  bottom: 0;
+}
+
+.username {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, calc(100% + 0.5rem));
+  color: var(--light-color);
+  font-size: 0.75rem;
+}
+
 .edit-card {
   align-self: center;
+}
+
+@media (max-width: 512px) {
+  .commander-card {
+    width: 80vw;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 414px) {
+  .commander-card {
+    padding: 1.5rem;
+    border-radius: 1rem 1rem 1rem 0;
+  }
+  .message-tail {
+    position: absolute;
+    left: -100px;
+    bottom: 0;
+    transform: translate(25px, 25px) scale(0.5);
+  }
 }
