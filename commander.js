@@ -97,8 +97,17 @@ onAuthStateChanged(auth, async (user) => {
     const data = roomSnap.data();
     document.querySelector('.commander-card span').innerText = `${data.email}: ${data.message}`;
     document.querySelector('.commander-card').style.backgroundColor = data.bg;
+    if(data.mediaLink) {
+      addMedia(data.mediaLink);
+    }
   });
 });
+
+function addMedia(link) {
+  let img = document.createElement('img');
+  img.src = link;
+  document.querySelector('.commander-card').append(img);
+}
 
 ////////////////////////////////////////
 //////////     room update     /////////
@@ -117,7 +126,8 @@ editForm.addEventListener('submit', async (e) => {
   try {
     await updateDoc(doc(db, 'rooms', auth.currentUser.uid), {
       message: payload.message,
-      bg: payload.bg
+      bg: payload.bg,
+      mediaLink: payload.mediaLink
     });
   } catch (err) {
     console.log(err.message);
