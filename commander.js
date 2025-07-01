@@ -96,6 +96,7 @@ onAuthStateChanged(auth, async (user) => {
     // Документ существует — отображаем данные
     const data = roomSnap.data();
     document.querySelector('.commander-card span').innerText = `${data.email}: ${data.message}`;
+    document.querySelector('.commander-card').style.backgroundColor = data.bg;
   });
 });
 
@@ -103,12 +104,30 @@ onAuthStateChanged(auth, async (user) => {
 //////////     room update     /////////
 ////////////////////////////////////////
 
+editBtn.addEventListener('click', () => {
+  document.querySelector('.edit-card').classList.toggle('hidden');
+  document.querySelector('.commander-card').classList.toggle('hidden');
+});
 
+editForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData(editForm);
+  const payload = Object.fromEntries(formData.entries());
+
+  try {
+    await updateDoc(doc(db, 'rooms', auth.currentUser.uid), {
+      message: payload.message,
+      bg: payload.bg
+    });
+  } catch (err) {
+    console.log(err.message);
+  }
+});
 
 ///////////////////////
 /////   logout    /////
 ///////////////////////
 
-optionBtn.addEventListener('click', async () => {
+closeBtn.addEventListener('click', async () => {
   await signOut(auth);
 });

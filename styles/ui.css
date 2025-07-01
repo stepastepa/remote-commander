@@ -18,7 +18,7 @@ html {
 }
 
 #logo,
-#optionBtn {
+#options {
   position: fixed;
   top: 0;
   left: 0;
@@ -27,12 +27,16 @@ html {
   font-family: sans-serif;
   z-index: 99;
 }
-#optionBtn {
+#options {
   left: auto;
   right: 0;
+  display: flex;
+  gap: 0.25rem;
 }
 #logo a,
-#optionBtn a {
+#closeBtn,
+#editBtn {
+  position: relative;
   color: var(--dark-color);
   line-height: 1;
   display: flex;
@@ -41,9 +45,14 @@ html {
   height: 2rem;
   width: 2rem;
   text-decoration: none;
+  cursor: pointer;
+}
+#editBtn {
+  top: -1px;
 }
 #logo a:hover,
-#optionBtn a:hover {
+#closeBtn:hover,
+#editBtn:hover {
   color: var(--dark-color-hover);
 }
 #logo a {
