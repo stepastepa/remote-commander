@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remote Commander</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="login-card">
+    <div class="tab-buttons">
+      <button id="login-tab" class="active">Sign in</button>
+      <button id="register-tab">Register</button>
+    </div>
+
+    <div id="loginContainer" class="tab-content active">
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="emailInput">Email:</label>
+          <input id="emailInput" type="text" name="email" required />
+        </div>
+        <div class="form-group">
+          <label for="passwordInput">Password:</label>
+          <input id="passwordInput" type="password" name="password" required />
+        </div>
+        <button type="submit" class="btn">Sign in</button>
+      </form>
+      <div class="message" id="msgLog">123</div>
+    </div>
+
+    <div id="registerContainer" class="tab-content">
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="emailInputReg">Email:</label>
+          <input id="emailInputReg" type="text" name="email" required />
+        </div>
+        <div class="form-group">
+          <label for="passwordInputReg">Password:</label>
+          <input id="passwordInputReg" type="password" name="password" required />
+        </div>
+        <div class="form-group">
+          <label for="confirmPasswordInputReg">Confirm Password:</label>
+          <input id="confirmPasswordInputReg" type="password" name="confirmPassword" required />
+        </div>
+        <button type="submit" class="btn">Register</button>
+      </form>
+      <div class="message" id="msgReg">message</div>
+    </div>
+  </div>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>
