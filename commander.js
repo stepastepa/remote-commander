@@ -98,7 +98,7 @@ onAuthStateChanged(auth, async (user) => {
     document.querySelector('.commander-card').innerHTML = ''; // reset
     document.querySelector('.commander-card').innerHTML = `
       <span class="username">${data.email}</span>
-      <span class="message">${data.message}</span>
+      <span class="user-message">${data.message}</span>
       <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" class="message-tail" fill="${data.bg}">
         <path d="M 100 100 L 100 50 A 50 50 0 0 1 85 100 Z"/>
       </svg>
