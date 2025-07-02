@@ -2,6 +2,7 @@ html {
   --dark-color: #0d0c22;
   --dark-color-hover: #6e6d7a;
   --light-color: #737373;
+  --light-color-hover: #424242;
 
   --dark-bg: #0d0c22;
   --dark-bg-hover: #3d3d4e;
@@ -32,12 +33,13 @@ html {
   right: 0;
   display: flex;
   gap: 0.25rem;
+  mix-blend-mode: difference;
 }
 #logo a,
 #closeBtn,
 #editBtn {
   position: relative;
-  color: var(--dark-color);
+  color: var(--light-color);
   line-height: 1;
   display: flex;
   justify-content: center;
@@ -53,7 +55,7 @@ html {
 #logo a:hover,
 #closeBtn:hover,
 #editBtn:hover {
-  color: var(--dark-color-hover);
+  color: var(--light-color-hover);
 }
 #logo a {
   color: darkorange;

@@ -88,7 +88,7 @@ onAuthStateChanged(auth, async (user) => {
       await setDoc(roomRef, {
         email: user.email || "",
         message: 'Hello World!',
-        bg: 'white',
+        theme: 'F3F3F6+FFFFFF+191919',
         mediaLink: ''
       });
       console.log("Создан профиль для нового пользователя");
@@ -101,14 +101,22 @@ onAuthStateChanged(auth, async (user) => {
     document.querySelector('.commander-card').innerHTML = `
       <span class="username">${data.email}</span>
       <span class="user-message">${data.message}</span>
-      <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" class="message-tail" fill="${data.bg}">
+      <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" class="message-tail" fill="white">
         <path d="M 100 100 L 100 50 A 50 50 0 0 1 85 100 Z"/>
       </svg>
     `;
-    document.querySelector('.commander-card').style.backgroundColor = data.bg;
     if(data.mediaLink) {
       addMedia(data.mediaLink);
     }
+    // color theme setup
+    let themeColors = data.theme.split('+');
+    let bodyBg = '#'+themeColors[0];
+    let messageBg = '#'+themeColors[1];
+    let fontColor = '#'+themeColors[2];
+    document.querySelector('body').style.backgroundColor = bodyBg;
+    document.querySelector('.commander-card').style.backgroundColor = messageBg;
+    document.querySelector('.message-tail').style.fill = messageBg;
+    document.querySelector('.commander-card').style.color = fontColor;
     // fill inputs fields
     messageInput.value = data.message || '';
     mediaLinkInput.value = data.mediaLink || '';
@@ -142,7 +150,7 @@ editForm.addEventListener('submit', async (e) => {
   try {
     await updateDoc(doc(db, 'rooms', auth.currentUser.uid), {
       message: payload.message,
-      bg: payload.bg,
+      theme: payload.theme,
       mediaLink: payload.mediaLink
     });
   } catch (err) {
