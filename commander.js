@@ -126,7 +126,49 @@ onAuthStateChanged(auth, async (user) => {
 function addMedia(link) {
   let img = document.createElement('img');
   img.src = link;
+  setupPointerEvents(img); // for fullscreen
   document.querySelector('.commander-card').append(img);
+}
+
+/////////////////////
+// fullscreen view //
+/////////////////////
+
+function setupPointerEvents(element) {
+  let lastClickTime = 0;
+  let lastClickPos = null;
+  const DOUBLE_CLICK_DELAY = 500; // миллисекунд
+  const MAX_DISTANCE = 10; // пикселей
+
+  element.addEventListener('pointerdown', (event) => {
+    const now = Date.now();
+    const pos = { x: event.clientX, y: event.clientY };
+
+    if (
+      lastClickTime &&
+      (now - lastClickTime < DOUBLE_CLICK_DELAY) &&
+      lastClickPos &&
+      distance(pos, lastClickPos) < MAX_DISTANCE
+    ) {
+
+      // console.log('Double pointer click!');
+      toggleFullscreenImg(event);
+
+      lastClickTime = 0;
+      lastClickPos = null;
+    } else {
+      lastClickTime = now;
+      lastClickPos = pos;
+    }
+  });
+
+  function distance(p1, p2) {
+    return Math.hypot(p1.x - p2.x, p1.y - p2.y);
+  }
+}
+
+function toggleFullscreenImg(e) {
+  e.target.classList.toggle('fullscreen');
 }
 
 ////////////////////////////////////////
