@@ -120,7 +120,7 @@ body {
   align-self: center;
   justify-self: center;
 
-  width: 100%;
+  width: min(100%, fit-content);
   padding: 2rem;
   background-color: var(--white);
   border-radius: 1.5rem 1.5rem 1.5rem 0;
