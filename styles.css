@@ -218,7 +218,7 @@ body {
   z-index: 1000;
 }
 .commander-card:has(img.fullscreen):after {
-  content: '123';
+  content: '';
   position: fixed;
   inset: 0;
   background-color: black;
