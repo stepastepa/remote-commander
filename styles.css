@@ -205,7 +205,7 @@ body {
 
 @media (max-width: 512px) {
   .commander-card {
-    width: 80vw;
+    width: min(80vw, fit-content);
     margin-left: auto;
     margin-right: auto;
   }
