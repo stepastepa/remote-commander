@@ -120,7 +120,8 @@ body {
   align-self: center;
   justify-self: center;
 
-  width: min(100%, fit-content);
+  width: fit-content;
+  max-width: 100%;
   padding: 2rem;
   background-color: var(--white);
   border-radius: 1.5rem 1.5rem 1.5rem 0;
@@ -205,9 +206,8 @@ body {
 
 @media (max-width: 512px) {
   .commander-card {
-    width: min(80vw, fit-content);
-    margin-left: auto;
-    margin-right: auto;
+    width: fit-content;
+    max-width: 80%;
   }
 }
 
