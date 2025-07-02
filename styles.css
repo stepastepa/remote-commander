@@ -129,7 +129,7 @@ body {
 
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0.5rem;
+  /* gap: 0.5rem; */
 
   /* filter: drop-shadow(0 2px 0 hsla(45deg 50% 25% / 0.05)); */
 }
