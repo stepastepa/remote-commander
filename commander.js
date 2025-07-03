@@ -130,9 +130,34 @@ function addMedia(link) {
   document.querySelector('.commander-card').append(img);
 }
 
-/////////////////////
-// fullscreen view //
-/////////////////////
+/////////////////////////////////////////
+//    prevent default touch actions    //
+/////////////////////////////////////////
+
+// prevent default pinch zooming
+document.addEventListener('touchstart', preventZooming);
+document.addEventListener('touchmove', preventZooming);
+document.addEventListener('touchend', preventZooming);
+
+function preventZooming(e) {
+  if (e.touches && e.touches.length > 1) {
+    e.preventDefault(); // отменяем дефолтное
+  }
+}
+
+// prevent default double tap zooming
+let lastTouchEnd = 0;
+document.addEventListener('touchend', function (e) {
+  const now = Date.now();
+  if (now - lastTouchEnd <= 300) {
+    e.preventDefault(); // отменяем дефолтное
+  }
+  lastTouchEnd = now;
+}, { passive: false });
+
+///////////////////////////
+//    fullscreen view    //
+///////////////////////////
 
 function setupPointerEvents(element) {
   let lastClickTime = 0;
