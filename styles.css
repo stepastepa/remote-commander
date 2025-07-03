@@ -273,7 +273,7 @@ body {
   border-radius: 0;
   z-index: 1000;
 }
-.commander-card:has(img.fullscreen):after {
+body:has(img.fullscreen):after {
   content: '';
   position: fixed;
   inset: 0;
