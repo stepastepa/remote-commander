@@ -16,10 +16,16 @@
   scroll-behavior: smooth;
 }
 
+body {
+  min-height: 100dvh;
+  background-color: var(--body-bg);
+  color: var(--dark-color);
+}
+
 header {
-  /* padding-top: 20vh; */
   min-height: 100dvh;
   font-family: Inter, var(--font-sans-serif);
+  background-color: var(--white);
 
   display: flex;
   flex-direction: column;
@@ -56,8 +62,6 @@ header a.btn {
 main {
   min-height: 100dvh;
   padding: 1rem;
-  background-color: var(--body-bg);
-  color: var(--dark-color);
 
   display: grid;
   align-items: start;
