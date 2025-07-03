@@ -135,15 +135,11 @@ function addMedia(link) {
 /////////////////////////////////////////
 
 // prevent default pinch zooming
-document.addEventListener('touchstart', preventZooming);
-document.addEventListener('touchmove', preventZooming);
-document.addEventListener('touchend', preventZooming);
-
-function preventZooming(e) {
-  if (e.touches && e.touches.length > 1) {
+document.addEventListener('touchstart', (e) => {
+  if (e.touches.length > 1) {
     e.preventDefault(); // отменяем дефолтное
   }
-}
+}, { passive: false });
 
 // prevent default double tap zooming
 let lastTouchEnd = 0;
