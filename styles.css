@@ -24,7 +24,7 @@ body {
 header {
   min-height: 100dvh;
   font-family: Inter, var(--font-sans-serif);
-  background-color: var(--white);
+  background: linear-gradient(to bottom, var(--white) 0%, var(--light-bg) 100%);
 
   display: flex;
   flex-direction: column;
@@ -194,7 +194,6 @@ header a.btn {
   height: 1.5rem;
   width: 1.5rem;
   background-color: var(--message-bg);
-  background-attachment: fixed;
   border-bottom-left-radius: 1rem;
 }
 
