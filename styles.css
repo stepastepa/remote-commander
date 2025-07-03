@@ -17,7 +17,6 @@
 }
 
 body {
-  min-height: 100dvh;
   background-color: var(--body-bg);
   color: var(--dark-color);
 }
@@ -59,7 +58,7 @@ header a.btn {
   margin-bottom: auto;
 }
 
-main {
+#app {
   min-height: 100dvh;
   padding: 1rem;
 
