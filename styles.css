@@ -283,8 +283,9 @@ header a.btn {
   height: 4rem;
   position: relative;
   border-radius: 0.75rem;
-  display: grid;
-  place-content: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .color-preview {
   width: 2rem;
@@ -295,6 +296,9 @@ header a.btn {
   box-shadow: inset 0 0 0 3px #0d0c22, inset 0 0 0 5px #fff;
 }
 
+.color-preview-bg:has(img) {
+  align-items: stretch;
+}
 .color-preview-bg img {
   width: 100%;
   padding: 1rem;
