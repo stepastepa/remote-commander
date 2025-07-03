@@ -161,7 +161,7 @@ function setupPointerEvents(element) {
   const DOUBLE_CLICK_DELAY = 500; // миллисекунд
   const MAX_DISTANCE = 10; // пикселей
 
-  element.addEventListener('pointerdown', (event) => {
+  element.addEventListener('pointerup', (event) => {
     const now = Date.now();
     const pos = { x: event.clientX, y: event.clientY };
 
@@ -171,10 +171,9 @@ function setupPointerEvents(element) {
       lastClickPos &&
       distance(pos, lastClickPos) < MAX_DISTANCE
     ) {
-
-      // console.log('Double pointer click!');
       toggleFullscreenImg(event);
 
+      // Сброс
       lastClickTime = 0;
       lastClickPos = null;
     } else {
