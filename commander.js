@@ -195,15 +195,22 @@ function toggleFullscreenImg(e) {
 //////////     room update     /////////
 ////////////////////////////////////////
 
+// toggle ON/OFF
+const fadedBG = document.querySelector('.bg-fading');
+
 editBtn.addEventListener('click', () => {
+  toggleCommanderRoom();
+});
+fadedBG.addEventListener('click', () => {
   toggleCommanderRoom();
 });
 
 function toggleCommanderRoom() {
-  document.querySelector('.edit-card').classList.toggle('hidden');
+  document.querySelector('.edit-container').classList.toggle('hidden');
   document.querySelector('.commander-card').classList.toggle('hidden');
 }
 
+// upload data
 editForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const formData = new FormData(editForm);

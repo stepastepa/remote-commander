@@ -23,83 +23,86 @@
     </svg>
   </div>
 
-  <div class="edit-card hidden">
-    <form id="editForm">
-      <div class="form-group">
-        <label for="messageInput">Message:</label>
-        <input id="messageInput" type="text" name="message" />
-      </div>
-      <div class="form-group">
-        <label for="mediaLinkInput">Media Link:</label>
-        <input id="mediaLinkInput" type="text" name="mediaLink" />
-      </div>
-      <div class="form-group">
-        <label>Color Themes:</label>
-        <div id="themes-container">
-          <label class="color-option">
-            <input type="radio" name="theme" value="f3f3f6+ffffff+0d0c22" checked/>
-            <div class="color-preview-bg" style="background-color: #f3f3f6;">
-              <div class="color-preview" style="background-color: #ffffff;"></div>
-            </div>
-          </label>
-          <label class="color-option">
-            <input type="radio" name="theme" value="f3f3f6+FA5345+ffffff" />
-            <div class="color-preview-bg" style="background-color: #f3f3f6;">
-              <div class="color-preview" style="background-color: #FA5345;"></div>
-            </div>
-          </label>
-          <label class="color-option">
-            <input type="radio" name="theme" value="f3f3f6+2fb300+ffffff" />
-            <div class="color-preview-bg" style="background-color: #f3f3f6;">
-              <div class="color-preview" style="background-color: #2fb300;"></div>
-            </div>
-          </label>
-          <label class="color-option">
-            <input type="radio" name="theme" value="f3f3f6+4560F7+FFFFFF" />
-            <div class="color-preview-bg" style="background-color: #f3f3f6;">
-              <div class="color-preview" style="background-color: #4560F7;"></div>
-            </div>
-          </label>
-          <label class="color-option">
-            <input type="radio" name="theme" value="f3f3f6+C797F5+FFFFFF" />
-            <div class="color-preview-bg" style="background-color: #f3f3f6;">
-              <div class="color-preview" style="background-color: #C797F5;"></div>
-            </div>
-          </label>
-          <label class="color-option">
-            <input type="radio" name="theme" value="898994+ffffff+191919" />
-            <div class="color-preview-bg" style="background-color: #898994;">
-              <div class="color-preview" style="background-color: #ffffff;"></div>
-            </div>
-          </label>
-          <label class="color-option">
-            <input type="radio" name="theme" value="6EA5D0+ffffff+191919" />
-            <div class="color-preview-bg" style="background-color: #6EA5D0;">
-              <div class="color-preview" style="background-color: #ffffff;"></div>
-            </div>
-          </label>
-          <label class="color-option">
-            <input type="radio" name="theme" value="A7D29A+FFFFFF+191919" />
-            <div class="color-preview-bg" style="background-color: #A7D29A;">
-              <div class="color-preview" style="background-color: #FFFFFF;"></div>
-            </div>
-          </label>
-          <label class="color-option">
-            <input type="radio" name="theme" value="F5D261+ffffff+191919" />
-            <div class="color-preview-bg" style="background-color: #F5D261;">
-              <div class="color-preview" style="background-color: #ffffff;"></div>
-            </div>
-          </label>
-          <label class="color-option">
-            <input type="radio" name="theme" value="a595d5+ffffff+191919" />
-            <div class="color-preview-bg" style="background-color: #a595d5;">
-              <div class="color-preview" style="background-color: #ffffff;"></div>
-            </div>
-          </label>
+  <div class="edit-container hidden">
+    <div class="bg-fading"></div>
+    <div class="edit-card">
+      <form id="editForm">
+        <div class="form-group">
+          <label for="messageInput">Message:</label>
+          <input id="messageInput" type="text" name="message" />
         </div>
-      </div>
-      <button type="submit" class="btn">Update</button>
-    </form>
+        <div class="form-group">
+          <label for="mediaLinkInput">Media Link:</label>
+          <input id="mediaLinkInput" type="text" name="mediaLink" />
+        </div>
+        <div class="form-group">
+          <label>Color Themes:</label>
+          <div id="themes-container">
+            <label class="color-option">
+              <input type="radio" name="theme" value="f3f3f6+ffffff+0d0c22" checked/>
+              <div class="color-preview-bg" style="background-color: #f3f3f6;">
+                <div class="color-preview" style="background-color: #ffffff;"></div>
+              </div>
+            </label>
+            <label class="color-option">
+              <input type="radio" name="theme" value="f3f3f6+FA5345+ffffff" />
+              <div class="color-preview-bg" style="background-color: #f3f3f6;">
+                <div class="color-preview" style="background-color: #FA5345;"></div>
+              </div>
+            </label>
+            <label class="color-option">
+              <input type="radio" name="theme" value="f3f3f6+2fb300+ffffff" />
+              <div class="color-preview-bg" style="background-color: #f3f3f6;">
+                <div class="color-preview" style="background-color: #2fb300;"></div>
+              </div>
+            </label>
+            <label class="color-option">
+              <input type="radio" name="theme" value="f3f3f6+4560F7+FFFFFF" />
+              <div class="color-preview-bg" style="background-color: #f3f3f6;">
+                <div class="color-preview" style="background-color: #4560F7;"></div>
+              </div>
+            </label>
+            <label class="color-option">
+              <input type="radio" name="theme" value="f3f3f6+C797F5+FFFFFF" />
+              <div class="color-preview-bg" style="background-color: #f3f3f6;">
+                <div class="color-preview" style="background-color: #C797F5;"></div>
+              </div>
+            </label>
+            <label class="color-option">
+              <input type="radio" name="theme" value="898994+ffffff+191919" />
+              <div class="color-preview-bg" style="background-color: #898994;">
+                <div class="color-preview" style="background-color: #ffffff;"></div>
+              </div>
+            </label>
+            <label class="color-option">
+              <input type="radio" name="theme" value="6EA5D0+ffffff+191919" />
+              <div class="color-preview-bg" style="background-color: #6EA5D0;">
+                <div class="color-preview" style="background-color: #ffffff;"></div>
+              </div>
+            </label>
+            <label class="color-option">
+              <input type="radio" name="theme" value="A7D29A+FFFFFF+191919" />
+              <div class="color-preview-bg" style="background-color: #A7D29A;">
+                <div class="color-preview" style="background-color: #FFFFFF;"></div>
+              </div>
+            </label>
+            <label class="color-option">
+              <input type="radio" name="theme" value="F5D261+ffffff+191919" />
+              <div class="color-preview-bg" style="background-color: #F5D261;">
+                <div class="color-preview" style="background-color: #ffffff;"></div>
+              </div>
+            </label>
+            <label class="color-option">
+              <input type="radio" name="theme" value="a595d5+ffffff+191919" />
+              <div class="color-preview-bg" style="background-color: #a595d5;">
+                <div class="color-preview" style="background-color: #ffffff;"></div>
+              </div>
+            </label>
+          </div>
+        </div>
+        <button type="submit" class="btn">Update</button>
+      </form>
+    </div>
   </div>
 
   <script type="module" src="./commander.js"></script>
