@@ -1,6 +1,8 @@
 @import url(./styles/reset.css);
 @import url(./styles/ui.css);
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
 /* /////////////////////////////// */
 /* /////////////////////////////// */
 
@@ -8,9 +10,50 @@
   --font-color: #0d0c22;
   --body-bg: #f3f3f6;
   --message-bg: white;
+
+  --hero-font-size: clamp(2rem, 7vw + 1rem, 9rem);
+
+  scroll-behavior: smooth;
 }
 
-body {
+header {
+  /* padding-top: 20vh; */
+  min-height: 100dvh;
+  font-family: Inter, var(--font-sans-serif);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  place-items: center;
+}
+header .logo {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+header h1 {
+  font-weight: bold;
+  text-align: center;
+  max-width: 90vw;
+  font-size: var(--hero-font-size);
+  text-box-trim: trim-both;
+  text-box-edge: cap text;
+}
+header p {
+  margin-top: 1rem;
+  text-align: center;
+  max-width: 90vw;
+  font-size: calc(var(--hero-font-size) / 1.618 / 1.618);
+  font-weight: 200;
+}
+header a.btn {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+main {
   min-height: 100dvh;
   padding: 1rem;
   background-color: var(--body-bg);
@@ -288,10 +331,14 @@ body:has(img.fullscreen):after {
     width: fit-content;
     max-width: 80%;
   }
+
+  header .logo {
+    font-size: calc(2rem / 1.618);
+  }
 }
 
 @media (max-width: 414px) {
-  body {
+  main {
     padding: 0;
     align-items: flex-start;
   }
@@ -302,6 +349,7 @@ body:has(img.fullscreen):after {
     padding-top: 4rem;
     min-height: 100dvh;
     margin-top: 0;
+    box-shadow: none;
   }
 
   .edit-container {
