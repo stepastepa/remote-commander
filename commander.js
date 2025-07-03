@@ -45,6 +45,13 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 ////////////////////////////////////////
+////////////////////////////////////////
+////////////////////////////////////////
+
+// импортируем палитру цветов
+import themes from './themes.js';
+
+////////////////////////////////////////
 //////////     room setup     //////////
 ////////////////////////////////////////
 
@@ -113,6 +120,15 @@ onAuthStateChanged(auth, async (user) => {
     let bodyBg = '#'+themeColors[0];
     let messageBg = '#'+themeColors[1];
     let fontColor = '#'+themeColors[2];
+    
+    // random colors from themes.js
+    if(bodyBg === "#magic" || messageBg === "#magic" || fontColor === "#magic") {
+      const theme = themes[Math.floor(Math.random() * themes.length)];
+      bodyBg = theme.bodyBg;
+      messageBg = theme.messageBg;
+      fontColor = theme.fontColor;
+    }
+
     document.querySelector('body').style.backgroundColor = bodyBg;
     document.querySelector('.commander-card').style.backgroundColor = messageBg;
     document.querySelector('.message-tail').style.fill = messageBg;
@@ -219,7 +235,7 @@ editForm.addEventListener('submit', async (e) => {
   try {
     await updateDoc(doc(db, 'rooms', auth.currentUser.uid), {
       message: payload.message,
-      theme: payload.theme,
+      theme: payload.theme==="magic+magic+magic"?`magic+magic+magic+${Math.random()}`:payload.theme,
       mediaLink: payload.mediaLink
     });
   } catch (err) {
