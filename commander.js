@@ -107,7 +107,7 @@ onAuthStateChanged(auth, async (user) => {
     document.querySelector('.commander-card').innerHTML = ''; // reset
     document.querySelector('.commander-card').innerHTML = `
       <span class="username">${data.email}</span>
-      <span class="user-message" style="${data.message?"margin-bottom:0.5rem":""}">${data.message}</span>
+      <span class="user-message" style="${data.message && data.mediaLink?"margin-bottom:0.5rem":""}">${data.message}</span>
     `;
     if(data.mediaLink) {
       addMedia(data.mediaLink);
