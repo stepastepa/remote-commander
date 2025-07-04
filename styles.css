@@ -148,6 +148,8 @@ footer {
 }
 footer span {
   grid-row: 2;
+  text-align: center;
+  line-height: 1.35;
 }
 
 /*//////////  Messages  //////////*/
@@ -399,16 +401,16 @@ body:has(img.fullscreen):after {
 
   #app {
     padding: 0;
-    align-items: flex-start;
   }
 
   .login-card {
     border-radius: 0;
     padding: 1.5rem;
-    padding-top: 4rem;
     min-height: 100dvh;
     margin-top: 0;
     box-shadow: none;
+
+    justify-content: center;
   }
 
   .edit-container {
