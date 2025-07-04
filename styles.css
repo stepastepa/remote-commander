@@ -74,10 +74,9 @@ header p {
 
 /* only for index.html */
 main#app {
+  position: relative;
   align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 1;
+  padding-bottom: 10vh;
 }
 
 .login-card,
@@ -133,23 +132,19 @@ main#app {
 /*//////////  Footer  //////////*/
 
 footer {
-  background: linear-gradient(to bottom, transparent 0%, var(--light-bg) 75%, var(--light-bg) 100%);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
   color: var(--light-color);
-  min-height: 60dvh;
 
+  min-height: 10dvh;
   display: grid;
-  grid-template-rows: 3fr 1fr;
   place-items: center;
-
-  position: relative;
-  z-index: 2;
-
-  pointer-events: none;
 }
 footer span {
-  grid-row: 2;
   text-align: center;
-  line-height: 1.35;
 }
 
 /*//////////  Messages  //////////*/
@@ -402,12 +397,17 @@ body:has(img.fullscreen):after {
 
   #app {
     padding: 0;
+    background-color: var(--white);
+  }
+
+  main#app {
+    padding-bottom: 15vh;
   }
 
   .login-card {
     border-radius: 0;
     padding: 1.5rem;
-    min-height: 100dvh;
+    min-height: 85dvh;
     margin-top: 0;
     box-shadow: none;
 
@@ -443,5 +443,14 @@ body:has(img.fullscreen):after {
   }
   #backBtn:hover {
     color: var(--dark-color-hover);
+  }
+
+  footer {
+    min-height: 15dvh;
+  }
+  footer span {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
   }
 }
