@@ -219,6 +219,9 @@ editBtn.addEventListener('click', () => {
 fadedBG.addEventListener('click', () => {
   toggleCommanderRoom();
 });
+backBtn.addEventListener('click', () => {
+  toggleCommanderRoom();
+});
 
 function toggleCommanderRoom() {
   document.querySelector('.edit-container').classList.toggle('hidden');

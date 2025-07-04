@@ -271,7 +271,8 @@ footer span {
 }
 
 .commander-card.hidden,
-.edit-container.hidden {
+.edit-container.hidden,
+#backBtn {
   display: none;
 }
 
@@ -422,5 +423,25 @@ body:has(img.fullscreen):after {
     padding-top: 4rem;
     min-height: 100dvh;
     margin-top: 0;
+  }
+  
+  #backBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 2rem;
+    color: var(--dark-color);
+    height: 2rem;
+    width: 2rem;
+    cursor: pointer;
+  }
+  #backBtn:hover {
+    color: var(--dark-color-hover);
   }
 }
