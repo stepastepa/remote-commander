@@ -22,6 +22,7 @@ body {
 }
 
 header {
+  padding-top: 5vw;
   min-height: 100dvh;
   font-family: Inter, var(--font-sans-serif);
   background: linear-gradient(to bottom, var(--white) 0%, var(--light-bg) 100%);
