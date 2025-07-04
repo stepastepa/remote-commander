@@ -344,7 +344,11 @@ body:has(img.fullscreen):after {
 }
 
 @media (max-width: 414px) {
-  main {
+  header {
+    background: linear-gradient(to bottom, var(--light-bg) 0%, var(--white) 100%);
+  }
+
+  #app {
     padding: 0;
     align-items: flex-start;
   }
