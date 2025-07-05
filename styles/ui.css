@@ -18,6 +18,8 @@ html {
   --error-color: crimson;
 }
 
+/*//////////  Header Buttons  //////////*/
+
 #logo,
 #options {
   position: fixed;
@@ -70,6 +72,8 @@ html {
   object-fit: cover;
 }
 
+/*//////////  Main Dark Buttons  //////////*/
+
 .btn {
   display: inline-block;
   padding: 1rem 2rem;
@@ -90,6 +94,8 @@ html {
   cursor: default;
   opacity: 0.5;
 }
+
+/*//////////  Light Buttons  //////////*/
 
 .light-btn {
   padding: 0.5rem;
