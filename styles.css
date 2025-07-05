@@ -260,6 +260,9 @@ footer span {
   font-size: 5cqmin;
   font-weight: 500;
 }
+.user-message.gap {
+  margin-bottom: 1.25cqmin;
+}
 .loading.user-message {
   opacity: 0.2;
   padding-left: 2cqmin;
