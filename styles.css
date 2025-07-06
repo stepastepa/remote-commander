@@ -203,8 +203,6 @@ footer span {
   display: flex;
   justify-content: center;
   align-items: center;
-
-  container-type: size;
 }
 
 .commander-container.scrollable {
@@ -221,9 +219,9 @@ footer span {
   flex-direction: column;
 
   width: fit-content;
-  max-width: 90cqmin;
-  padding: 5cqmin;
-  border-radius: 5cqmin;
+  max-width: 90vmin;
+  padding: 5vmin;
+  border-radius: 5vmin;
 
   color: var(--font-color);
   background-color: var(--message-bg);
@@ -237,10 +235,10 @@ footer span {
   z-index: 0;
 
   bottom: 1px;
-  right: -2.5cqmin;
-  height: 5cqmin;
-  width: 5cqmin;
-  border-bottom-left-radius: 3cqmin;
+  right: -2.5vmin;
+  height: 5vmin;
+  width: 5vmin;
+  border-bottom-left-radius: 3vmin;
 
   background-color: var(--message-bg);
 }
@@ -250,30 +248,30 @@ footer span {
   z-index: 1;
 
   bottom: 0;
-  right: -2.5cqmin;
-  width: 2.5cqmin;
-  height: calc(5cqmin + 1px);
-  border-bottom-left-radius: 3cqmin;
+  right: -2.5vmin;
+  width: 2.5vmin;
+  height: calc(5vmin + 1px);
+  border-bottom-left-radius: 3vmin;
 
   background-color: var(--body-bg);
 }
 
 .commander-card img {
-  border-radius: 2cqmin;
+  border-radius: 2vmin;
   width: 100%;
 }
 
 .user-message {
-  font-size: 5cqmin;
+  font-size: 5vmin;
   font-weight: 500;
 }
 .user-message.gap {
-  margin-bottom: 1.25cqmin;
+  margin-bottom: 1.25vmin;
 }
 .loading.user-message {
   opacity: 0.2;
-  padding-left: 2cqmin;
-  padding-right: 2cqmin;
+  padding-left: 2vmin;
+  padding-right: 2vmin;
 }
 
 .username {
