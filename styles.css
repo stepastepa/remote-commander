@@ -418,11 +418,11 @@ footer>span {
 
   #app {
     padding: 0;
-    background-color: var(--white);
   }
 
   main#app {
     grid-template-rows: 85dvh 15dvh;
+    background-color: var(--white);
   }
 
   .login-card {
