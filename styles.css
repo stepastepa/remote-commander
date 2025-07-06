@@ -388,7 +388,7 @@ footer>span {
   display: none;
 }
 
-body:has(.fullscreen) {
+body#app:has(.fullscreen) {
   background-color: black;
 }
 
