@@ -371,7 +371,7 @@ footer span {
   border-radius: 0;
   z-index: 1000;
 }
-body:has(img.fullscreen):after {
+.commander-container:has(img.fullscreen):after {
   content: '';
   position: fixed;
   inset: 0;
