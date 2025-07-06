@@ -190,9 +190,9 @@ document.addEventListener('touchend', function (e) {
   lastTouchEnd = now;
 }, { passive: false });
 
-///////////////////////////
-//    fullscreen view    //
-///////////////////////////
+///////////////////////////////////
+//    fullscreen image viewer    //
+///////////////////////////////////
 
 function setupPointerEvents(element) {
   let lastClickTime = 0;
@@ -277,4 +277,28 @@ editForm.addEventListener('submit', async (e) => {
 
 closeBtn.addEventListener('click', async () => {
   await signOut(auth);
+});
+
+/////////////////////////////////////
+//    fullscreen website viewer    //
+/////////////////////////////////////
+
+fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+function toggleFullscreen() {
+  if(!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+document.addEventListener('fullscreenchange', () => {
+  if (document.fullscreenElement) {
+    fullscreenBtn.querySelector('.minimize').classList.remove('hidden');
+    fullscreenBtn.querySelector('.maximize').classList.add('hidden');
+  } else {
+    fullscreenBtn.querySelector('.minimize').classList.add('hidden');
+    fullscreenBtn.querySelector('.maximize').classList.remove('hidden');
+  }
 });

@@ -39,7 +39,8 @@ html {
 }
 #logo a,
 #closeBtn,
-#editBtn {
+#editBtn,
+#fullscreenBtn {
   position: relative;
   color: var(--light-color);
   line-height: 1;
@@ -56,7 +57,8 @@ html {
 }
 #logo a:hover,
 #closeBtn:hover,
-#editBtn:hover {
+#editBtn:hover,
+#fullscreenBtn:hover {
   color: var(--light-color-hover);
 }
 #logo a {
@@ -113,6 +115,12 @@ html {
 }
 .light-btn:hover {
   border: 1px solid var(--light-border-color-hover);
+}
+
+/*//////////  toggle Buttons  //////////*/
+
+.toggle-btn .hidden {
+  display: none;
 }
 
 /*//////////  Forms  //////////*/
