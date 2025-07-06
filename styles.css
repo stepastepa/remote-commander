@@ -65,7 +65,7 @@ header p {
 
 #app {
   min-height: 100dvh;
-  padding: 1rem;
+  padding: 0 1rem;
 
   display: grid;
   align-items: start;
@@ -76,7 +76,7 @@ header p {
 main#app {
   position: relative;
   align-items: center;
-  padding-bottom: 10vh;
+  grid-template-rows: minmax(90dvh, auto) minmax(10dvh, auto);
 }
 
 .login-card,
@@ -93,6 +93,10 @@ main#app {
   justify-content: flex-start;
   align-items: stretch;
   gap: 1rem;
+}
+
+.login-card {
+  margin-top: 0.75rem;
 }
 
 .tab-buttons {
@@ -132,19 +136,17 @@ main#app {
 /*//////////  Footer  //////////*/
 
 footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
+  grid-column: 1 / -1;
+  grid-row: 2;
   color: var(--light-color);
 
-  min-height: 10dvh;
   display: grid;
   place-items: center;
 }
-footer span {
+footer>span {
   text-align: center;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
 }
 
 /*//////////  Messages  //////////*/
@@ -416,20 +418,18 @@ footer span {
 
   #app {
     padding: 0;
+    background-color: var(--white);
   }
 
   main#app {
-    padding-bottom: 15vh;
+    grid-template-rows: 85dvh 15dvh;
   }
 
   .login-card {
+    margin-top: 0;
     border-radius: 0;
     padding: 1.5rem;
-    min-height: 85dvh;
-    margin-top: 0;
     box-shadow: none;
-
-    justify-content: center;
   }
 
   .edit-container {
@@ -451,10 +451,6 @@ footer span {
     margin: 1.5rem;
   }
 
-  footer {
-    background-color: var(--white);
-    min-height: 15dvh;
-  }
   footer span {
     display: flex;
     flex-direction: column;
