@@ -207,6 +207,13 @@ footer span {
   container-type: size;
 }
 
+.commander-container.scrollable {
+  align-items: start;
+  overflow-y: auto;
+  padding-top: 5vmin;
+  padding-bottom: 5vmin;
+}
+
 .commander-card {
   position: relative;
 

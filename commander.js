@@ -135,6 +135,15 @@ onAuthStateChanged(auth, async (user) => {
     // fill inputs fields
     messageInput.value = data.message || '';
     mediaLinkInput.value = data.mediaLink || '';
+
+    // ждем загрузку картинки и проверяем высоту, чтоб все влазило
+    const img = document.querySelector('.commander-card img');
+    if (img.complete) {
+      bubbleHeightCheck();
+    } else {
+      img.addEventListener('load', bubbleHeightCheck);
+    }
+
   });
 });
 
@@ -143,6 +152,21 @@ function addMedia(link) {
   img.src = link;
   setupPointerEvents(img); // for fullscreen
   document.querySelector('.commander-card').append(img);
+}
+
+function bubbleHeightCheck() {
+  let viewportHeight = window.innerHeight; 
+  let bubbleHeight = document.querySelector('.commander-card').offsetHeight;
+  let container = document.querySelector('.commander-container');
+
+  console.dir(viewportHeight);
+  console.dir(bubbleHeight);
+
+  if(bubbleHeight > viewportHeight*0.9) {
+    container.classList.add('scrollable');
+  } else {
+    container.classList.remove('scrollable');
+  }
 }
 
 /////////////////////////////////////////
