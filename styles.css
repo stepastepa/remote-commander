@@ -388,6 +388,10 @@ footer>span {
   display: none;
 }
 
+body:has(.fullscreen) {
+  background-color: black;
+}
+
 /*//////////  Responsive  //////////*/
 
 @media (max-width: 767px) {
