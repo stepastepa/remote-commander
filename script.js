@@ -99,7 +99,7 @@ formReg.addEventListener('submit', async (e) => {
         msg = "This email is already used";
         break;
       case "auth/invalid-email":
-        msg = "Emsil is incorrect";
+        msg = "Email is incorrect";
         break;
       case "auth/weak-password":
         msg = "Password is too weak";
@@ -134,7 +134,16 @@ formLog.addEventListener('submit', async (e) => {
     // ✅ переходим на страницу edit.html
     window.location.href = `./room.html`;
   } catch (err) {
-    messageLog.textContent = `${err.message}`;
+    // переводим ошибки на человеческий язык
+    let msg;
+    switch (err.code) {
+      case "auth/invalid-credential":
+        msg = "Email and Password are incorrect";
+        break;
+      default:
+        msg = err.message;
+    }
+    messageLog.textContent = `${msg}`;
     messageLog.classList.remove('active-success');
     messageLog.classList.add('active-error');
     loginContainer.classList.add('incorrect');

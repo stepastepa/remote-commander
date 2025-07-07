@@ -149,7 +149,26 @@ footer>span {
   padding-bottom: 0.75rem;
 }
 
-/*//////////  Messages  //////////*/
+/*//////////  HTML inputs prevalidation  //////////*/
+
+/* #registerContainer input:user-valid */
+#registerContainer input:not(:placeholder-shown):valid {
+  border-color: #6ec540;
+  background-color: hsl(115, 100%, 95%);
+}
+
+/* #registerContainer input:user-invalid */
+#registerContainer input:not(:placeholder-shown):invalid {
+  border-color: #ff9eb1;
+  background-color: hsl(348, 100%, 95%);
+}
+
+#registerContainer input:focus:invalid {
+  border-color: hsl(55, 90%, 75%);
+  background-color: hsl(55, 90%, 95%);
+}
+
+/*//////////  Messages and Forms Errors //////////*/
 
 #loginContainer.incorrect input {
   border-color: #ff9eb1;
@@ -158,6 +177,7 @@ footer>span {
 #loginContainer.incorrect label {
   color: crimson;
 }
+
 #registerContainer.incorrect #usernameInputReg {
   border-color: #ff9eb1;
   background-color: hsl(348, 100%, 95%);
@@ -172,11 +192,11 @@ footer>span {
 }
 #registerContainer input.invalid {
   position: relative;
-  border-color: #ff9eb1;
-  background-color: hsl(348, 100%, 95%);
+  border-color: #ff9eb1 !important;
+  background-color: hsl(348, 100%, 95%) !important;
 }
 
-#registerContainer label:has(input.invalid):after {
+#registerContainer .form-group:has(input.invalid) label:after {
   content: 'already exist';
   color: var(--white);
   background-color: crimson;
@@ -191,8 +211,9 @@ footer>span {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2;
 }
-#registerContainer label:has(#confirmPasswordInputReg.invalid):after {
+#registerContainer .form-group:has(input.invalid) label:after {
   content: "doesn't match";
 }
 

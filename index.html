@@ -30,11 +30,11 @@
       <form id="loginForm">
         <div class="form-group">
           <label for="emailInput">Email:</label>
-          <input id="emailInput" type="text" name="email" required />
+          <input id="emailInput" type="email" name="email" required />
         </div>
         <div class="form-group">
           <label for="passwordInput">Password:</label>
-          <input id="passwordInput" type="password" name="password" required />
+          <input id="passwordInput" type="password" name="password" minlength="6" required />
         </div>
         <button type="submit" class="btn">Sign in</button>
       </form>
@@ -45,15 +45,15 @@
       <form id="registerForm">
         <div class="form-group">
           <label for="emailInputReg">Email:</label>
-          <input id="emailInputReg" type="text" name="email" placeholder="email@example.com" required />
+          <input id="emailInputReg" type="email" name="email" placeholder="email@example.com" required />
         </div>
         <div class="form-group">
           <label for="passwordInputReg">Password:</label>
-          <input id="passwordInputReg" type="password" name="password" placeholder="6+ characters" required />
+          <input id="passwordInputReg" type="password" name="password" placeholder="6+ characters" minlength="6" required />
         </div>
         <div class="form-group">
           <label for="confirmPasswordInputReg">Confirm Password:</label>
-          <input id="confirmPasswordInputReg" type="password" name="confirmPassword" required />
+          <input id="confirmPasswordInputReg" type="password" name="confirmPassword" placeholder="repeat password" minlength="6" required />
         </div>
         <button type="submit" class="btn">Register</button>
       </form>
