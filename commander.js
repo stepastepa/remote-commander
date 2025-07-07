@@ -135,10 +135,16 @@ onAuthStateChanged(auth, async (user) => {
     // fill inputs fields
     messageInput.value = data.message || '';
     mediaLinkInput.value = data.mediaLink || '';
-    themesContainer.querySelectorAll('input').forEach((el) => {
+    let themesInputs = themesContainer.querySelectorAll('input');
+    themesInputs.forEach((el) => {
       el.removeAttribute('checked');
-      if(el.value === data.theme) el.setAttribute('checked', '');
+      if(el.value === data.theme) {
+        el.setAttribute('checked', '');
+      }
     });
+    if(data.theme.includes('magic')) {
+      themesInputs[themesInputs.length - 1].setAttribute('checked', '');
+    }
 
     // ждем загрузку картинки и проверяем высоту, чтоб все влазило
     const img = document.querySelector('.commander-card img');
