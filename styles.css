@@ -363,7 +363,7 @@ footer>span {
   box-shadow: inset 0 0 0 2px hsla(243deg 48% 9% / 0.2);
 }
 
-/*//////////  Fullscreen  //////////*/
+/*//////////  Fullscreen Image Viewer  //////////*/
 
 .commander-card img {
   cursor: pointer;
@@ -389,7 +389,7 @@ footer>span {
 }
 
 body#app:has(.fullscreen) {
-  background-color: black;
+  background-color: black; /* ipad top and bottom screen tech bars */
 }
 
 /*//////////  Responsive  //////////*/

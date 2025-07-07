@@ -210,7 +210,8 @@ function setupPointerEvents(element) {
       lastClickPos &&
       distance(pos, lastClickPos) < MAX_DISTANCE
     ) {
-      toggleFullscreenImg(event);
+      toggleFullscreenImg(event); // stretch the image
+      toggleFullscreen();         // toggle fullscreen mode
 
       // Сброс
       lastClickTime = 0;
