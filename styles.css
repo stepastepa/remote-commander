@@ -24,7 +24,7 @@ body {
 header {
   padding-top: 20vh;
   padding-bottom: calc(20vh / 1.618);
-  min-height: 100dvh;
+  min-height: 100svh;
   font-family: Inter, var(--font-sans-serif);
   background: linear-gradient(to bottom, var(--white) 0%, var(--light-bg) 100%);
 
@@ -64,7 +64,7 @@ header p {
 }
 
 #app {
-  min-height: 100dvh;
+  min-height: 100svh;
   padding: 0 1rem;
 
   display: grid;
@@ -76,7 +76,7 @@ header p {
 main#app {
   position: relative;
   align-items: center;
-  grid-template-rows: minmax(90dvh, auto) minmax(10dvh, auto);
+  grid-template-rows: minmax(90svh, auto) minmax(10svh, auto);
 }
 
 .login-card,
@@ -314,7 +314,7 @@ footer>span {
   top: 0;
   left: 0;
   right: 0;
-  min-height: 100dvh;
+  min-height: 100svh;
   padding: 1rem;
 
   display: grid;
@@ -446,7 +446,7 @@ body#app:has(.fullscreen) {
   }
 
   main#app {
-    grid-template-rows: 85dvh 15dvh;
+    grid-template-rows: 85svh 15svh;
     background-color: var(--white);
   }
 
@@ -464,7 +464,7 @@ body#app:has(.fullscreen) {
     border-radius: 0;
     padding: 1.5rem;
     padding-top: 5.5rem;
-    min-height: 100dvh;
+    min-height: 100svh;
     margin-top: 0;
   }
   
