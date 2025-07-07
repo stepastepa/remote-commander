@@ -135,6 +135,10 @@ onAuthStateChanged(auth, async (user) => {
     // fill inputs fields
     messageInput.value = data.message || '';
     mediaLinkInput.value = data.mediaLink || '';
+    themesContainer.querySelectorAll('input').forEach((el) => {
+      el.removeAttribute('checked');
+      if(el.value === data.theme) el.setAttribute('checked', '');
+    });
 
     // ждем загрузку картинки и проверяем высоту, чтоб все влазило
     const img = document.querySelector('.commander-card img');
