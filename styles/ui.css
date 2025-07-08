@@ -38,6 +38,10 @@ html {
   gap: 0.25rem;
   mix-blend-mode: difference;
 }
+#roomToggle,
+#options {
+  mix-blend-mode: difference;
+}
 #logo a,
 #closeBtn,
 #editBtn,
@@ -63,9 +67,9 @@ html {
 #closeBtn:hover,
 #editBtn:hover,
 #fullscreenBtn:hover,
-#timerBtn:hover,
-#galleryBtn:hover,
-#messageBtn:hover {
+#timerBtn:hover:not(.active),
+#galleryBtn:hover:not(.active),
+#messageBtn:hover:not(.active) {
   color: var(--light-color-hover);
   opacity: 1;
 }

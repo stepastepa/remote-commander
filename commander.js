@@ -118,6 +118,7 @@ onAuthStateChanged(auth, async (user) => {
       cards[0].classList.add('active');
     }
 
+    ////// message card setup //////
     document.querySelector('.message-card').innerHTML = ''; // reset
     document.querySelector('.message-card').innerHTML = `
       <span class="username">${data.email}</span>
@@ -126,6 +127,21 @@ onAuthStateChanged(auth, async (user) => {
     if(data.mediaLink) {
       addMedia(data.mediaLink);
     }
+
+    ////// timer card setup //////
+    document.querySelector('.timer-card').innerHTML = ''; // reset
+    document.querySelector('.timer-card').innerHTML = `
+      <span class="timer-text">00:00</span>
+    `;
+
+    ////// gallery card setup //////
+    document.querySelector('.gallery-card').innerHTML = ''; // reset
+    document.querySelector('.gallery-card').innerHTML = `
+      <ul>
+        ${'<li>image 01</li>'}
+      </ul>
+    `;
+
     // color theme setup
     let themeColors = data.theme.split('+');
     let bodyBg = '#'+themeColors[0];
@@ -372,3 +388,8 @@ async function activateRoomType(selectedType) {
     console.log(err.message);
   }
 }
+
+////////////////////////////
+//    Timer Controller    //
+////////////////////////////
+
