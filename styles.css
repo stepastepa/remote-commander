@@ -27,25 +27,32 @@ body {
 }
 
 header {
-  padding-top: 20vh;
-  padding-bottom: calc(20vh / 1.618);
   min-height: 100vh; /* fallback */
   min-height: 100svh;
   font-family: Inter, var(--font-sans-serif);
   background: linear-gradient(to bottom, var(--white) 0%, var(--light-bg) 100%);
 
+  display: grid;
+  /* alternative to horiz padding */
+  grid-template-columns: /*1rem*/ 1fr /*1rem*/;
+  /* alternative to padding-top/bottom */
+  grid-template-rows: minmax(1rem, 1fr) auto minmax(1rem, 0.8fr);
+}
+.header-container {
+  /* grid-column: 2 / -2; */
+  grid-row: 2 / -2;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
-  place-items: center;
+  align-items: center;
 }
+
 header .logo {
   text-align: center;
   font-size: 2rem;
   font-weight: 600;
-  /* margin-top: auto; */
-  padding-bottom: 1.5rem;
-  margin-bottom: auto;
+  padding-bottom: 3rem;
 }
 header h1 {
   font-weight: bold;
@@ -54,15 +61,14 @@ header h1 {
   font-size: var(--hero-font-size);
   text-box-trim: trim-both;
   text-box-edge: cap text;
+  padding-bottom: 1rem;
 }
 header p {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-  margin-bottom: auto;
   text-align: center;
   font-size: calc(var(--hero-font-size) / 1.618 / 1.618);
   font-weight: 200;
   line-height: 1.35;
+  padding-bottom: 3rem;
 }
 
 .nobreak {
