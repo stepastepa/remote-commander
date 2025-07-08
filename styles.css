@@ -6,6 +6,11 @@
 /* /////////////////////////////// */
 /* /////////////////////////////// */
 
+*, *:before, *:after {
+  /* for testing and detecting bugs */
+  /* outline: 2px solid lime; */
+}
+
 :root {
   --font-color: #0d0c22;
   --body-bg: #f3f3f6;
@@ -167,8 +172,10 @@ footer>span {
 }
 
 #registerContainer input:focus:invalid {
-  border-color: hsl(55, 90%, 75%);
-  background-color: hsl(55, 90%, 95%);
+  /* border-color: hsl(55, 90%, 75%);
+  background-color: hsl(55, 90%, 95%); */
+  border: 1px solid var(--light-border-color-hover);
+  background-color: transparent;
 }
 
 /*//////////  Messages and Forms Errors //////////*/
