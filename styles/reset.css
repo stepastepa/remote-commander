@@ -6,6 +6,9 @@
   padding: 0;
 
   -webkit-tap-highlight-color: transparent; /* for chrome blue selection overlay */
+
+  /* for testing and detecting bugs */
+  outline: 2px solid lime;
 }
 
 html {
