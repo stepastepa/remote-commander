@@ -104,8 +104,8 @@ onAuthStateChanged(auth, async (user) => {
 
     // Документ существует — отображаем данные
     const data = roomSnap.data();
-    document.querySelector('.commander-card').innerHTML = ''; // reset
-    document.querySelector('.commander-card').innerHTML = `
+    document.querySelector('.message-card').innerHTML = ''; // reset
+    document.querySelector('.message-card').innerHTML = `
       <span class="username">${data.email}</span>
       <span class="user-message ${data.message && data.mediaLink?"gap":""}">${data.message}</span>
     `;
@@ -163,7 +163,7 @@ onAuthStateChanged(auth, async (user) => {
 
     ////////////////////////////////////////////////////////////////
     // ждем загрузку картинки и проверяем высоту, чтоб все влазило
-    const img = document.querySelector('.commander-card img');
+    const img = document.querySelector('.message-card img');
     if (img.complete) {
       bubbleHeightCheck();
     } else {
@@ -177,12 +177,12 @@ function addMedia(link) {
   let img = document.createElement('img');
   img.src = link;
   setupPointerEvents(img); // for fullscreen
-  document.querySelector('.commander-card').append(img);
+  document.querySelector('.message-card').append(img);
 }
 
 function bubbleHeightCheck() {
   let viewportHeight = window.innerHeight; 
-  let bubbleHeight = document.querySelector('.commander-card').offsetHeight;
+  let bubbleHeight = document.querySelector('.message-card').offsetHeight;
   let container = document.querySelector('.commander-container');
 
   console.dir(viewportHeight);
@@ -276,7 +276,7 @@ backBtn.addEventListener('click', () => {
 
 function toggleCommanderRoom() {
   document.querySelector('.edit-container').classList.toggle('hidden');
-  document.querySelector('.commander-card').classList.toggle('hidden');
+  document.querySelector('.message-card').classList.toggle('hidden');
 }
 
 // upload data

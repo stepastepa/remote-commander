@@ -246,7 +246,7 @@ footer>span {
   padding-bottom: 5vmin;
 }
 
-.commander-card {
+.message-card {
   position: relative;
 
   display: flex;
@@ -263,7 +263,7 @@ footer>span {
   /* filter: drop-shadow(0 2px 0 hsla(45deg 50% 25% / 0.05)); */
 }
 
-.commander-card:before {
+.message-card:before {
   content: "";
   position: absolute;
   z-index: 0;
@@ -276,7 +276,7 @@ footer>span {
 
   background-color: var(--message-bg);
 }
-.commander-card:after {
+.message-card:after {
   content: "";
   position: absolute;
   z-index: 1;
@@ -290,7 +290,7 @@ footer>span {
   background-color: var(--body-bg);
 }
 
-.commander-card img {
+.message-card img {
   border-radius: 2vmin;
   width: 100%;
 }
@@ -398,11 +398,11 @@ footer>span {
 
 /*//////////  Fullscreen Image Viewer  //////////*/
 
-.commander-card img {
+.message-card img {
   cursor: pointer;
 }
 
-.commander-card img.fullscreen {
+.message-card img.fullscreen {
   position: fixed;
   inset: 0;
   width: 100%;
@@ -417,7 +417,8 @@ footer>span {
   inset: 0;
   background-color: black;
 }
-#app:has(.fullscreen) #options {
+#app:has(.fullscreen) #options,
+#app:has(.fullscreen) #roomToggle {
   display: none;
 }
 
