@@ -21,7 +21,8 @@ html {
 /*//////////  Header Buttons  //////////*/
 
 #logo,
-#options {
+#options,
+#roomToggle {
   position: fixed;
   top: 0;
   left: 0;
@@ -40,7 +41,10 @@ html {
 #logo a,
 #closeBtn,
 #editBtn,
-#fullscreenBtn {
+#fullscreenBtn,
+#timerBtn,
+#galleryBtn,
+#messageBtn {
   position: relative;
   color: var(--light-color);
   line-height: 1;
@@ -58,8 +62,12 @@ html {
 #logo a:hover,
 #closeBtn:hover,
 #editBtn:hover,
-#fullscreenBtn:hover {
+#fullscreenBtn:hover,
+#timerBtn:hover,
+#galleryBtn:hover,
+#messageBtn:hover {
   color: var(--light-color-hover);
+  opacity: 1;
 }
 #logo a {
   color: darkorange;
@@ -72,6 +80,19 @@ html {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/*//////////  toggle Container for Buttons  //////////*/
+
+.toggle-container {
+  display: flex;
+  box-shadow: 0 0 0 2px hsl(0deg 0% 45% / 1);
+  border-radius: 0.25rem;
+  padding-left: 0.2rem;
+  padding-right: 0.2rem;
+}
+.toggle-container div:not(.active) {
+  opacity: 0.3;
 }
 
 /*//////////  Main Dark Buttons  //////////*/

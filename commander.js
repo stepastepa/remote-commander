@@ -135,7 +135,7 @@ onAuthStateChanged(auth, async (user) => {
     // fill inputs fields
     messageInput.value = data.message || '';
     mediaLinkInput.value = data.mediaLink || '';
-    
+
     let themesInputs = themesContainer.querySelectorAll('input');
     if(data.theme.includes('magic')) {
       themesInputs[themesInputs.length - 1].setAttribute('checked', '');
@@ -148,6 +148,20 @@ onAuthStateChanged(auth, async (user) => {
       });
     }
 
+    // setup room toggle
+    let toggleContainerBtns = document.querySelectorAll('.toggle-container>div');
+    toggleContainerBtns.forEach((el) => {
+        el.classList.remove('active');
+    });
+    if (data.type === 'message') {
+      toggleContainerBtns[0].classList.add('active');
+    } else if (data.type === 'gallery') {
+      toggleContainerBtns[1].classList.add('active');
+    } else if (data.type === 'timer') {
+      toggleContainerBtns[2].classList.add('active');
+    }
+
+    ////////////////////////////////////////////////////////////////
     // ждем загрузку картинки и проверяем высоту, чтоб все влазило
     const img = document.querySelector('.commander-card img');
     if (img.complete) {
@@ -155,7 +169,7 @@ onAuthStateChanged(auth, async (user) => {
     } else {
       img.addEventListener('load', bubbleHeightCheck);
     }
-
+    ////////////////////////////////////////////////////////////////
   });
 });
 
@@ -315,3 +329,32 @@ document.addEventListener('fullscreenchange', () => {
     fullscreenBtn.querySelector('.maximize').classList.remove('hidden');
   }
 });
+
+//////////////////////////////////////
+//    toggle commander room type    //
+//////////////////////////////////////
+
+let toggleContainerBtns = document.querySelectorAll('.toggle-container>div');
+
+toggleContainerBtns.forEach((el) => {
+  el.addEventListener('click', () => {
+    let selectedType = 'message';
+    // console.log(el.id);
+    if(el.id === 'timerBtn') {
+      selectedType = 'timer';
+    } else if (el.id === 'galleryBtn') {
+      selectedType = 'gallery';
+    }
+    activateRoomType(selectedType);
+  });
+});
+
+async function activateRoomType(selectedType) {
+  try {
+    await updateDoc(doc(db, 'rooms', auth.currentUser.uid), {
+      type: selectedType
+    });
+  } catch (err) {
+    console.log(err.message);
+  }
+}
