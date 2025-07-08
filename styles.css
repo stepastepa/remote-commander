@@ -246,6 +246,12 @@ footer>span {
   padding-bottom: 5vmin;
 }
 
+.commander-container>div:not(.active) {
+  display: none;
+}
+
+/*//////////  Message Card  //////////*/
+
 .message-card {
   position: relative;
 
@@ -425,6 +431,14 @@ footer>span {
 body#app:has(.fullscreen) {
   background-color: black; /* ipad top and bottom screen tech bars */
 }
+
+/*//////////  Timer Card  //////////*/
+
+
+
+/*//////////  Gallery Card  //////////*/
+
+
 
 /*//////////  Responsive  //////////*/
 

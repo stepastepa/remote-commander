@@ -104,6 +104,20 @@ onAuthStateChanged(auth, async (user) => {
 
     // Документ существует — отображаем данные
     const data = roomSnap.data();
+
+    // скрываем неактивные типы комнат
+    let cards = document.querySelectorAll('.commander-container>div');
+    cards.forEach((el)=>{
+      el.classList.remove('active');
+    });
+    if (data.type === 'gallery') {
+      cards[2].classList.add('active');
+    } else if (data.type === 'timer') {
+      cards[1].classList.add('active');
+    } else {
+      cards[0].classList.add('active');
+    }
+
     document.querySelector('.message-card').innerHTML = ''; // reset
     document.querySelector('.message-card').innerHTML = `
       <span class="username">${data.email}</span>
