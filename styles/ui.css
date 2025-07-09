@@ -36,7 +36,6 @@ html {
   right: 0;
   display: flex;
   gap: 0.25rem;
-  mix-blend-mode: difference;
 }
 #roomToggle,
 #options {
@@ -99,6 +98,17 @@ html {
   opacity: 0.3;
 }
 
+/*//////  modified for gallery  //////*/
+
+/* always white color */
+#app:has(.gallery-card.active) #roomToggle .toggle-container>*,
+#app:has(.gallery-card.active) #options>* {
+  color: #fff;
+}
+#app:has(.gallery-card.active) .toggle-container {
+  box-shadow: 0 0 0 2px white;
+}
+
 /*//////////  Main Dark Buttons  //////////*/
 
 .btn {
@@ -152,12 +162,15 @@ html {
 
 #editForm,
 #loginForm,
-#registerForm {
+#registerForm,
+.message-form-container,
+.gallery-form-container,
+.timer-form-container {
   display: grid;
   gap: 1rem;
 }
 
-.form-group {
+.form-group, #slidesGroup {
   display: grid;
   gap: 0.4rem;
 }

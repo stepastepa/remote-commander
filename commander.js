@@ -105,20 +105,34 @@ onAuthStateChanged(auth, async (user) => {
     // Документ существует — отображаем данные
     const data = roomSnap.data();
 
-    // скрываем неактивные типы комнат
+    // скрываем неактивные типы комнат и их параметры в настройках
     let cards = document.querySelectorAll('.commander-container>div');
+    let editFormGroups = document.querySelectorAll('#editForm>div');
+
     cards.forEach((el)=>{
       el.classList.remove('active');
     });
+    editFormGroups.forEach((el)=>{
+      el.classList.remove('active');
+    });
+
     if (data.type === 'gallery') {
       cards[2].classList.add('active');
+      editFormGroups[1].classList.add('active');
     } else if (data.type === 'timer') {
       cards[1].classList.add('active');
+      editFormGroups[2].classList.add('active');
+      editFormGroups[3].classList.add('active');
     } else {
       cards[0].classList.add('active');
+      editFormGroups[0].classList.add('active');
+      editFormGroups[3].classList.add('active');
     }
 
-    ////// message card setup //////
+    /////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
+
+    /////////// message card setup ///////////
     document.querySelector('.message-card').innerHTML = ''; // reset
     document.querySelector('.message-card').innerHTML = `
       <span class="username">${data.email}</span>
@@ -128,19 +142,42 @@ onAuthStateChanged(auth, async (user) => {
       addMedia(data.mediaLink);
     }
 
-    ////// timer card setup //////
+    /////////// timer card HTML setup ///////////
     document.querySelector('.timer-card').innerHTML = ''; // reset
     document.querySelector('.timer-card').innerHTML = `
-      <span class="timer-text">00:00</span>
+      <svg width="100%" height="100%" viewBox="0 0 48 24">
+        <g fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="1" width="46" height="22" rx="5" ry="5" stroke="var(--message-bg)"></rect>
+          <rect x="4" y="4" width="40" height="16" rx="2" ry="2" stroke="none" fill="var(--message-bg)" stroke-width="1"></rect>
+          <text
+            x="50%"
+            y="53%"
+            font-size="10"
+            text-anchor="middle"
+            dominant-baseline="middle"
+            font-family="monospace"
+            font-weight="normal"
+            fill="var(--font-color)"
+            stroke="none"
+          >00:00</text>
+        </g>
+      </svg>
     `;
 
-    ////// gallery card setup //////
+    /////////// gallery card HTML setup /////////
     document.querySelector('.gallery-card').innerHTML = ''; // reset
-    document.querySelector('.gallery-card').innerHTML = `
-      <ul>
-        ${'<li>image 01</li>'}
-      </ul>
-    `;
+    let slides = data.slidesLinks;
+    for (let i = 0; i < data.numberOfSlides; i++) {
+      document.querySelector('.gallery-card').innerHTML += `<img src="${slides[i]}"/>`;
+    }
+    const images = document.querySelectorAll('.gallery-card img');
+    stopShow(); // remove all previous slideshows !!!
+    if(document.querySelector('.gallery-card').classList.contains('active')) {
+      startShow(images);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
 
     // color theme setup
     let themeColors = data.theme.split('+');
@@ -162,10 +199,31 @@ onAuthStateChanged(auth, async (user) => {
     root.style.setProperty('--body-bg', bodyBg);
     root.style.setProperty('--message-bg', messageBg);
 
+    ////////////////////////////////////////////////////
     // fill inputs fields
     messageInput.value = data.message || '';
     mediaLinkInput.value = data.mediaLink || '';
+    numberOfSlidesInput.value = data.numberOfSlides || '5';
 
+    // add blank inputs for links
+    slidesGroup.innerHTML = ''; // reset
+    for (let i = 0; i < data.numberOfSlides; i++) {
+      slidesGroup.innerHTML += `<input type="text" value="" required/>`;
+    }
+    // fill inputs for links
+    let slidesInputs = slidesGroup.querySelectorAll('input');
+    slidesInputs.forEach((el, index)=>{
+      if (!data.slidesLinks) {
+        let randomNum = Math.floor(Math.random() * 9999) + 1;
+        el.value = `https://picsum.photos/seed/${randomNum}/1920/1080`;
+      } else {
+        el.value = data.slidesLinks[index];
+      }
+    });
+    // console.log(slidesInputs);
+    setRealtimeGalleryUpdate();
+
+    // theme inputs
     let themesInputs = themesContainer.querySelectorAll('input');
     if(data.theme.includes('magic')) {
       themesInputs[themesInputs.length - 1].setAttribute('checked', '');
@@ -177,6 +235,7 @@ onAuthStateChanged(auth, async (user) => {
         }
       });
     }
+    ////////////////////////////////////////////////////
 
     // setup room toggle
     let toggleContainerBtns = document.querySelectorAll('.toggle-container>div');
@@ -315,11 +374,22 @@ editForm.addEventListener('submit', async (e) => {
   const formData = new FormData(editForm);
   const payload = Object.fromEntries(formData.entries());
 
+  // setup gallery slides
+  let galleryData = [];
+  let slides = slidesGroup.querySelectorAll('input');
+  // console.log(slides[0].value);
+  for(let i = 0; i < slides.length; i++) {
+    galleryData.push(slides[i].value);
+  }
+
   try {
     await updateDoc(doc(db, 'rooms', auth.currentUser.uid), {
       message: payload.message,
       theme: payload.theme==="magic+magic+magic"?`magic+magic+magic+${Math.random()}`:payload.theme,
-      mediaLink: payload.mediaLink
+      mediaLink: payload.mediaLink,
+      numberOfSlides: payload.numberOfSlides,
+      slidesLinks: galleryData,
+      timer: payload.timer
     });
   } catch (err) {
     console.log(err.message);
@@ -389,7 +459,100 @@ async function activateRoomType(selectedType) {
   }
 }
 
-////////////////////////////
-//    Timer Controller    //
-////////////////////////////
+/////////////////////////////////////////
+//    Gallery Form Realtime Updater    //
+/////////////////////////////////////////
 
+function setRealtimeGalleryUpdate() {
+  numberOfSlidesInput.addEventListener('input', ()=>updateLinksInputs());
+}
+
+function updateLinksInputs() {
+  if(numberOfSlidesInput.value === '' || numberOfSlidesInput.value === "0") return;
+
+  let slidesInputs = slidesGroup.querySelectorAll('input');
+  if (slidesInputs.length > +numberOfSlidesInput.value) {
+    // удаляем лишние поля ввода
+    for(let i = slidesInputs.length; i > +numberOfSlidesInput.value; i--) {
+      slidesGroup.removeChild(slidesGroup.querySelectorAll('input')[slidesGroup.querySelectorAll('input').length - 1]);
+    }
+  } else if (slidesInputs.length < +numberOfSlidesInput.value) {
+    // заново + прибавляем поля ввода
+    slidesGroup.innerHTML = ''; // reset
+    for(let i = 0; i < +numberOfSlidesInput.value; i++) {
+      let randomNum = Math.floor(Math.random() * 9999) + 1;
+      let link = '';
+      // console.log(slidesInputs[i]?slidesInputs[i].value:'-');
+      if (slidesInputs[i]) {
+        link = slidesInputs[i].value;
+      } else {
+        link = `https://picsum.photos/seed/${randomNum}/1920/1080`;
+      }
+      slidesGroup.innerHTML += `<input type="text" value=${link} required/>`;
+    }
+  }
+}
+
+/////////////////////////////////////////
+//    Gallery Slide Show Controller    //
+/////////////////////////////////////////
+
+// function waitForAllImagesLoaded(startShow) {
+//   // ждем загрузку картинок и проверяем запускаем показ
+//   const images = document.querySelectorAll('.gallery-card img');
+//   let loadedCount = 0;
+
+//   images.forEach((el)=> {
+//     if (el.complete) {
+//       imageReady(el);
+//       loadedCount++;
+//       if (loadedCount === images.length) startShow(images);
+//     } else {
+//       el.addEventListener('load', () => {
+//         imageReady(el);
+//         loadedCount++;
+//         if (loadedCount === images.length) startShow(images);
+//       });
+//     }
+//   });
+// }
+
+// function imageReady(img) {
+//   img.classList.add('downloaded');
+// }
+
+// function startShow(images) {
+//   console.log('start show!!!');
+//   let randomIndex = () => Math.floor(Math.random() * images.length) + 1;
+//   images[randomIndex()].classList.add('active');
+//   setTimeout(() => {
+//     document.querySelector('.gallery-card img.active').classList.remove('active');
+//     images[randomIndex()].classList.add('active');
+//   }, 2000);
+// }
+
+let timeoutId = null; // храним ID setTimeout
+
+function startShow(images) {
+  function showNext() {
+    // Удаляем текущее активное изображение
+    const current = document.querySelector('.gallery-card img.showing');
+    if (current) current.classList.remove('showing');
+
+    // Случайное новое изображение
+    const randomIndex = Math.floor(Math.random() * images.length);
+    images[randomIndex].classList.add('showing');
+
+    // Запускаем следующий показ и сохраняем ID
+    timeoutId = setTimeout(showNext, 5000);
+  }
+  // Первый запуск
+  showNext();
+}
+
+function stopShow() {
+  if (timeoutId !== null) {
+    clearTimeout(timeoutId);
+    timeoutId = null;
+  }
+}

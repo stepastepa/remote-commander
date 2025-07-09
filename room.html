@@ -46,15 +46,57 @@
     <div class="bg-fading"></div>
     <div class="edit-card">
       <form id="editForm">
-        <div class="form-group">
-          <label for="messageInput">Message:</label>
-          <input id="messageInput" type="text" name="message" />
+        <div class="message-form-container">
+          <div class="form-group">
+            <label for="messageInput">Message:</label>
+            <input id="messageInput" type="text" name="message" />
+          </div>
+          <div class="form-group">
+            <label for="mediaLinkInput">Media Link:</label>
+            <input id="mediaLinkInput" type="text" name="mediaLink" />
+          </div>
         </div>
-        <div class="form-group">
-          <label for="mediaLinkInput">Media Link:</label>
-          <input id="mediaLinkInput" type="text" name="mediaLink" />
+
+        <div class="gallery-form-container">
+          <div class="form-group">
+            <label for="numberOfSlidesInput">Number of Slides:</label>
+            <input id="numberOfSlidesInput" type="number" name="numberOfSlides" />
+          </div>
+          <div class="form-group">
+            <label>Media Links:</label>
+            <div id="slidesGroup">12345</div>
+          </div>
         </div>
-        <div class="form-group">
+
+        <div class="timer-form-container">
+          <div class="form-group">
+            <label>Choose Timer:</label>
+            <div id="timersContainer">
+              <label class="timer-option">
+                <input type="radio" name="timer" value="timegoesup" checked/>
+                <div class="timer-preview">Stopwatch</div>
+              </label>
+              <label class="timer-option">
+                <input type="radio" name="timer" value="timegoesdown"/>
+                <div class="timer-preview">Timer</div>
+              </label>
+              <label class="timer-option">
+                <input type="radio" name="timer" value="currenttime"/>
+                <div class="timer-preview">Clock</div>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Set Timer:</label>
+            <div id="timeSet">
+              <input type="number" min="0" id="hours" placeholder="Hours">
+              <input type="number" min="0" max="59" id="minutes" placeholder="Minutes">
+              <input type="number" min="0" max="59" id="seconds" placeholder="Seconds">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group theme-form-container">
           <label>Color Themes:</label>
           <div id="themesContainer">
             <label class="color-option">
