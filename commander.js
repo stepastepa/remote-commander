@@ -283,6 +283,7 @@ onAuthStateChanged(auth, async (user) => {
 
     // update paused seconds
     pausedSeconds = data.pausedSeconds;
+    timerSeconds = data.timeForTimer;
 
     // set status for timer
     if (data.type === 'timer') {
@@ -290,7 +291,7 @@ onAuthStateChanged(auth, async (user) => {
         start();
       } else {
         console.log(data.timerStatus);
-        if (data.timerStatus === 'start') start(pausedSeconds, data.timeForTimer);
+        if (data.timerStatus === 'start') start(pausedSeconds, timerSeconds);
         if (data.timerStatus === 'pause') pause();
         if (data.timerStatus === 'reset') reset();
       }
@@ -648,7 +649,8 @@ let secondsPassed = 0;
 // 'stopwatch (timegoesup)' | 'timer (timegoesdown)' | 'clock (currenttime)'
 let mode = 'timegoesup';
 let isRunning = false;
-let pausedSeconds = 0; // супер глобальная (?????)
+let pausedSeconds = 0;
+let timerSeconds = 0;
 
 // startBtn.addEventListener('click', start);
 // pauseBtn.addEventListener('click', pause);
@@ -676,7 +678,7 @@ function switchMode(newMode, pausedSeconds, timerSeconds) {
   updateDisplay();
 }
 
-function start(pausedSeconds, timerSeconds) {
+function start(xxx, yyy) {
   if (isRunning) return;
   isRunning = true;
 
@@ -685,8 +687,8 @@ function start(pausedSeconds, timerSeconds) {
     intervalId = setInterval(updateClock, 1000);
   } else {
     // retrieve current seconds from firebase:
-    secondsPassed = pausedSeconds;
-    if (mode === 'timegoesdown') secondsPassed = timerSeconds;
+    secondsPassed = xxx;
+    if (mode === 'timegoesdown') secondsPassed = yyy;
 
     intervalId = setInterval(() => {
       if (mode === 'timegoesup') {
@@ -700,6 +702,7 @@ function start(pausedSeconds, timerSeconds) {
       }
       updateDisplay();
       pausedSeconds = secondsPassed;
+      if (mode === 'timegoesdown') timerSeconds = secondsPassed;
     }, 1000);
   }
 }
@@ -772,13 +775,23 @@ async function uploadTimerStatus(timerStatus) {
   }
 }
 
-async function uploadPausedSeconds(pausedSeconds) {
-  try {
-    await updateDoc(doc(db, 'rooms', auth.currentUser.uid), {
-      pausedSeconds: pausedSeconds
-    });
-  } catch (err) {
-    console.log(err.message);
+async function uploadPausedSeconds(pausedSeconds, timerSeconds) {
+  if (mode === 'timegoesup') {
+    try {
+      await updateDoc(doc(db, 'rooms', auth.currentUser.uid), {
+        pausedSeconds: pausedSeconds,
+      });
+    } catch (err) {
+      console.log(err.message);
+    }
+  } else if (mode === 'timegoesdown') {
+    try {
+      await updateDoc(doc(db, 'rooms', auth.currentUser.uid), {
+        timeForTimer: timerSeconds
+      });
+    } catch (err) {
+      console.log(err.message);
+    }
   }
 }
 
@@ -787,12 +800,11 @@ startBtn.addEventListener('click', ()=>{
 });
 
 pauseBtn.addEventListener('click', ()=>{
-  // console.log('===========> paused time: ' + pausedSeconds);
   uploadTimerStatus('pause');
-  uploadPausedSeconds(pausedSeconds); // memorize paused seconds
+  uploadPausedSeconds(pausedSeconds, timerSeconds); // memorize paused seconds
 });
 
 resetBtn.addEventListener('click', ()=>{
   uploadTimerStatus('reset');
-  uploadPausedSeconds(0); // reset paused seconds
+  uploadPausedSeconds(0, 0); // reset paused seconds
 });
