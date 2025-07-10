@@ -93,10 +93,20 @@ onAuthStateChanged(auth, async (user) => {
     if (!roomSnap.exists()) {
       // Документа нет — создаём его
       await setDoc(roomRef, {
-        email: user.email || "",
+        email: user.email || '',
+        mediaLink: '',
         message: 'Hello World!',
+        numberOfSlides: '3',
+        pausedSeconds: 0,
+        slidesLinks: [
+          `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`,
+          `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`,
+          `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`
+        ],
         theme: 'F3F3F6+FFFFFF+191919',
-        mediaLink: ''
+        timer: 'currenttime',
+        timerStatus: 'pause',
+        type: 'message'
       });
       console.log("Создан профиль для нового пользователя");
       return; // Ждём следующего срабатывания onSnapshot
@@ -216,8 +226,7 @@ onAuthStateChanged(auth, async (user) => {
     let slidesInputs = slidesGroup.querySelectorAll('input');
     slidesInputs.forEach((el, index)=>{
       if (!data.slidesLinks) {
-        let randomNum = Math.floor(Math.random() * 9999) + 1;
-        el.value = `https://picsum.photos/seed/${randomNum}/1920/1080`;
+        el.value = `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`;
       } else {
         el.value = data.slidesLinks[index];
       }
@@ -517,13 +526,12 @@ function updateLinksInputs() {
     // заново + прибавляем поля ввода
     slidesGroup.innerHTML = ''; // reset
     for(let i = 0; i < +numberOfSlidesInput.value; i++) {
-      let randomNum = Math.floor(Math.random() * 9999) + 1;
       let link = '';
       // console.log(slidesInputs[i]?slidesInputs[i].value:'-');
       if (slidesInputs[i]) {
         link = slidesInputs[i].value;
       } else {
-        link = `https://picsum.photos/seed/${randomNum}/1920/1080`;
+        link = `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`;
       }
       slidesGroup.innerHTML += `<input type="text" value=${link} required/>`;
     }
@@ -592,6 +600,14 @@ function stopShow() {
     clearTimeout(timeoutId);
     timeoutId = null;
   }
+}
+
+////////////////////////////////
+//    random number 1-9999    //
+////////////////////////////////
+
+function randomNumber(x, y) {
+  return Math.floor(Math.random() * (+y)) + (+x);
 }
 
 ////////////////////////////
