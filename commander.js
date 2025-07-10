@@ -103,7 +103,7 @@ onAuthStateChanged(auth, async (user) => {
           `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`,
           `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`
         ],
-        theme: 'F3F3F6+FFFFFF+191919',
+        theme: 'f3f3f6+ffffff+0d0c22',
         timer: 'currenttime',
         timerStatus: 'play',
         type: 'message'
@@ -125,7 +125,7 @@ onAuthStateChanged(auth, async (user) => {
       `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`,
       `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`
     ],
-    data.theme = data.theme || 'F3F3F6+FFFFFF+191919',
+    data.theme = data.theme || 'f3f3f6+ffffff+0d0c22',
     data.timer = data.timer || 'currenttime',
     data.timerStatus = data.timerStatus || 'play',
     data.type = data.type || 'message'
@@ -446,12 +446,15 @@ editForm.addEventListener('submit', async (e) => {
 
   try {
     await updateDoc(doc(db, 'rooms', auth.currentUser.uid), {
-      message: payload.message,
-      theme: payload.theme==="magic+magic+magic"?`magic+magic+magic+${Math.random()}`:payload.theme,
       mediaLink: payload.mediaLink,
+      message: payload.message,
       numberOfSlides: payload.numberOfSlides,
+      pausedSeconds: payload.pausedSeconds,
       slidesLinks: galleryData,
-      timer: payload.timer
+      theme: payload.theme==="magic+magic+magic"?`magic+magic+magic+${Math.random()}`:payload.theme,
+      timer: payload.timer,
+      timerStatus: payload.timerStatus,
+      type: payload.type
     });
   } catch (err) {
     console.log(err.message);
