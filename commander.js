@@ -106,7 +106,8 @@ onAuthStateChanged(auth, async (user) => {
         theme: 'f3f3f6+ffffff+0d0c22',
         timer: 'currenttime',
         timerStatus: 'start',
-        type: 'message'
+        type: 'message',
+        timeForTimer: 0
       });
       console.log("Создан профиль для нового пользователя");
       return; // Ждём следующего срабатывания onSnapshot
@@ -128,7 +129,8 @@ onAuthStateChanged(auth, async (user) => {
     data.theme = data.theme || 'f3f3f6+ffffff+0d0c22',
     data.timer = data.timer || 'currenttime',
     data.timerStatus = data.timerStatus || 'start',
-    data.type = data.type || 'message'
+    data.type = data.type || 'message',
+    data.timeForTimer = data.timeForTimer || 0
 
     console.log(data);
 
@@ -277,7 +279,7 @@ onAuthStateChanged(auth, async (user) => {
     }
 
     // switch mode and clean previous timer
-    switchMode(data.timer, data.pausedSeconds);
+    switchMode(data.timer, data.pausedSeconds, data.timeForTimer);
 
     // update paused seconds
     pausedSeconds = data.pausedSeconds;
@@ -288,7 +290,7 @@ onAuthStateChanged(auth, async (user) => {
         start();
       } else {
         console.log(data.timerStatus);
-        if (data.timerStatus === 'start') start(pausedSeconds);
+        if (data.timerStatus === 'start') start(pausedSeconds, data.timeForTimer);
         if (data.timerStatus === 'pause') pause();
         if (data.timerStatus === 'reset') reset();
       }
@@ -437,6 +439,7 @@ editForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const formData = new FormData(editForm);
   const payload = Object.fromEntries(formData.entries());
+  // console.log(payload);
 
   // setup gallery slides
   let galleryData = [];
@@ -446,6 +449,12 @@ editForm.addEventListener('submit', async (e) => {
     galleryData.push(slides[i].value);
   }
 
+  // setup time for timer
+  function calculateSecondsForTimer() {
+    return (+hours.value*60*60) + (+minutes.value*60) + (+seconds.value);
+  } 
+
+  ////////////////////////////////////////////////////////////////////////
   try {
     await updateDoc(doc(db, 'rooms', auth.currentUser.uid), {
       mediaLink: payload.mediaLink,
@@ -453,12 +462,13 @@ editForm.addEventListener('submit', async (e) => {
       numberOfSlides: payload.numberOfSlides,
       slidesLinks: galleryData,
       theme: payload.theme==="magic+magic+magic"?`magic+magic+magic+${Math.random()}`:payload.theme,
-      timer: payload.timer
+      timer: payload.timer,
+      timeForTimer: calculateSecondsForTimer()
     });
   } catch (err) {
     console.log(err.message);
   }
-
+  ////////////////////////////////////////////////////////////////////////
   toggleCommanderRoom();
 });
 
@@ -635,7 +645,6 @@ function randomNumber(x, y) {
 // default Data for Timer
 let intervalId = null;
 let secondsPassed = 0;
-let timerDuration = 60; // секунд для таймера
 // 'stopwatch (timegoesup)' | 'timer (timegoesdown)' | 'clock (currenttime)'
 let mode = 'timegoesup';
 let isRunning = false;
@@ -657,17 +666,17 @@ let pausedSeconds = 0; // супер глобальная (?????)
 //   }, 1000);
 // }
 
-function switchMode(newMode, xxx) {
+function switchMode(newMode, pausedSeconds, timerSeconds) {
   pause();
   mode = newMode;
-  secondsPassed = 0;
 
-  // retrieve paused seconds from firebase:
-  secondsPassed = xxx;
+  // retrieve current seconds from firebase:
+  secondsPassed = pausedSeconds;
+  if (mode === 'timegoesdown') secondsPassed = timerSeconds;
   updateDisplay();
 }
 
-function start(xxx) {
+function start(pausedSeconds, timerSeconds) {
   if (isRunning) return;
   isRunning = true;
 
@@ -675,8 +684,9 @@ function start(xxx) {
     updateClock();
     intervalId = setInterval(updateClock, 1000);
   } else {
-    // retrieve paused seconds from firebase:
-    secondsPassed = xxx;
+    // retrieve current seconds from firebase:
+    secondsPassed = pausedSeconds;
+    if (mode === 'timegoesdown') secondsPassed = timerSeconds;
 
     intervalId = setInterval(() => {
       if (mode === 'timegoesup') {
@@ -702,7 +712,7 @@ function pause() {
 
 function reset() {
   pause();
-  secondsPassed = (mode === 'timegoesdown') ? timerDuration : 0;
+  secondsPassed = 0;
   updateDisplay();
 }
 
