@@ -464,7 +464,8 @@ editForm.addEventListener('submit', async (e) => {
       slidesLinks: galleryData,
       theme: payload.theme==="magic+magic+magic"?`magic+magic+magic+${Math.random()}`:payload.theme,
       timer: payload.timer,
-      timeForTimer: calculateSecondsForTimer()
+      timeForTimer: calculateSecondsForTimer(),
+      timerStatus: 'start' // auto switch to start
     });
   } catch (err) {
     console.log(err.message);
