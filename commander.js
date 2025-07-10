@@ -314,11 +314,13 @@ onAuthStateChanged(auth, async (user) => {
 
     ////////////////////////////////////////////////////////////////
     // ждем загрузку картинки и проверяем высоту, чтоб все влазило
-    const img = document.querySelector('.message-card img');
-    if (img.complete) {
-      bubbleHeightCheck();
-    } else {
-      img.addEventListener('load', bubbleHeightCheck);
+    if (data.mediaLink) {
+      const img = document.querySelector('.message-card img');
+      if (img.complete) {
+        bubbleHeightCheck();
+      } else {
+        img.addEventListener('load', bubbleHeightCheck);
+      }
     }
     ////////////////////////////////////////////////////////////////
   });
