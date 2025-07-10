@@ -105,7 +105,7 @@ onAuthStateChanged(auth, async (user) => {
         ],
         theme: 'F3F3F6+FFFFFF+191919',
         timer: 'currenttime',
-        timerStatus: 'pause',
+        timerStatus: 'play',
         type: 'message'
       });
       console.log("Создан профиль для нового пользователя");
@@ -114,6 +114,22 @@ onAuthStateChanged(auth, async (user) => {
 
     // Документ существует — отображаем данные
     const data = roomSnap.data();
+
+    // проверка на отсутствие некоторых полей у старых пользователей:
+    data.mediaLink || '',
+    data.message || 'Hello World!',
+    data.numberOfSlides || '3',
+    data.pausedSeconds || 0,
+    data.slidesLinks || [
+      `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`,
+      `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`,
+      `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`
+    ],
+    data.theme || 'F3F3F6+FFFFFF+191919',
+    data.timer || 'currenttime',
+    data.timerStatus || 'play',
+    data.type || 'message'
+
     console.log(data);
 
     // скрываем неактивные типы комнат и их параметры в настройках
