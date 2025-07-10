@@ -104,6 +104,7 @@ onAuthStateChanged(auth, async (user) => {
 
     // Документ существует — отображаем данные
     const data = roomSnap.data();
+    console.log(data);
 
     // скрываем неактивные типы комнат и их параметры в настройках
     let cards = document.querySelectorAll('.commander-container>div');
@@ -143,21 +144,22 @@ onAuthStateChanged(auth, async (user) => {
     }
 
     /////////// timer card HTML setup ///////////
-    document.querySelector('.timer-card').innerHTML = ''; // reset
-    document.querySelector('.timer-card').innerHTML = `
+    timerImageGroup.innerHTML = ''; // reset
+    timerImageGroup.innerHTML = `
       <svg width="100%" height="100%" viewBox="0 0 48 24">
         <g fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="1" y="1" width="46" height="22" rx="5" ry="5" stroke="var(--message-bg)"></rect>
-          <rect x="4" y="4" width="40" height="16" rx="2" ry="2" stroke="none" fill="var(--message-bg)" stroke-width="1"></rect>
+          <!-- <rect x="1" y="1" width="46" height="22" rx="5" ry="5" stroke="var(--message-bg)"></rect>
+          <rect x="4" y="4" width="40" height="16" rx="2" ry="2" stroke="none" fill="var(--message-bg)" stroke-width="1"></rect> -->
           <text
+            id="timerText"
             x="50%"
             y="53%"
             font-size="10"
+            font-weight="bold"
             text-anchor="middle"
             dominant-baseline="middle"
             font-family="monospace"
-            font-weight="normal"
-            fill="var(--font-color)"
+            fill="var(--light-color)"
             stroke="none"
           >00:00</text>
         </g>
@@ -223,18 +225,53 @@ onAuthStateChanged(auth, async (user) => {
     // console.log(slidesInputs);
     setRealtimeGalleryUpdate();
 
-    // theme inputs
+    /////  theme inputs  /////
     let themesInputs = themesContainer.querySelectorAll('input');
     if(data.theme.includes('magic')) {
       themesInputs[themesInputs.length - 1].setAttribute('checked', '');
     } else {
       themesInputs.forEach((el) => {
-        el.removeAttribute('checked');
+        el.removeAttribute('checked'); // reset theme inputs
         if(el.value === data.theme) {
           el.setAttribute('checked', '');
         }
       });
     }
+
+    /////  timer inputs  /////
+    let timerInputs = timersContainer.querySelectorAll('input');
+    timerInputs.forEach((el) => {
+        el.removeAttribute('checked'); // reset timer inputs
+    });
+    if(data.timer === 'timegoesup') {
+      timerInputs[0].setAttribute('checked', '');
+    } else if (data.timer === 'timegoesdown') {
+      timerInputs[1].setAttribute('checked', '');
+    } else {
+      timerInputs[2].setAttribute('checked', '');
+    }
+
+    // switch mode and clean previous timer
+    switchMode(data.timer, data.pausedSeconds);
+
+    // update paused seconds
+    pausedSeconds = data.pausedSeconds;
+
+    // set status for timer
+    if (data.type === 'timer') {
+      if (data.timer === 'currenttime') { // ignore all if clock
+        start();
+      } else {
+        console.log(data.timerStatus);
+        if (data.timerStatus === 'start') start(pausedSeconds);
+        if (data.timerStatus === 'pause') pause();
+        if (data.timerStatus === 'reset') reset();
+      }
+    };
+
+    // toggle timer control panel
+    setupTimerButtons(data.timer);
+
     ////////////////////////////////////////////////////
 
     // setup room toggle
@@ -274,8 +311,8 @@ function bubbleHeightCheck() {
   let bubbleHeight = document.querySelector('.message-card').offsetHeight;
   let container = document.querySelector('.commander-container');
 
-  console.dir(viewportHeight);
-  console.dir(bubbleHeight);
+  // console.dir(viewportHeight);
+  // console.dir(bubbleHeight);
 
   if(bubbleHeight > viewportHeight*0.9) {
     container.classList.add('scrollable');
@@ -346,9 +383,9 @@ function toggleFullscreenImg(e) {
   e.target.classList.toggle('fullscreen');
 }
 
-////////////////////////////////////////
-//////////     room update     /////////
-////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////     room update     ///////////////////
+////////////////////////////////////////////////////////////
 
 // toggle ON/OFF
 const fadedBG = document.querySelector('.bg-fading');
@@ -556,3 +593,162 @@ function stopShow() {
     timeoutId = null;
   }
 }
+
+////////////////////////////
+//    Timer Controller    //
+////////////////////////////
+
+// default Data for Timer
+let intervalId = null;
+let secondsPassed = 0;
+let timerDuration = 60; // секунд для таймера
+// 'stopwatch (timegoesup)' | 'timer (timegoesdown)' | 'clock (currenttime)'
+let mode = 'timegoesup';
+let isRunning = false;
+let pausedSeconds = 0; // супер глобальная (?????)
+
+// startBtn.addEventListener('click', start);
+// pauseBtn.addEventListener('click', pause);
+// resetBtn.addEventListener('click', reset);
+
+// timerImageGroup.addEventListener('click', start);
+
+// function startTimer() {
+//   if (intervalId) return; // чтобы не запускать таймер повторно
+//   intervalId = setInterval(() => {
+//     secondsPassed++;
+//     const minutes = Math.floor(secondsPassed / 60).toString().padStart(2, '0');
+//     const seconds = (secondsPassed % 60).toString().padStart(2, '0');
+//     timerText.textContent = `${minutes}:${seconds}`;
+//   }, 1000);
+// }
+
+function switchMode(newMode, xxx) {
+  pause();
+  mode = newMode;
+  secondsPassed = 0;
+
+  // retrieve paused seconds from firebase:
+  secondsPassed = xxx;
+  updateDisplay();
+}
+
+function start(xxx) {
+  if (isRunning) return;
+  isRunning = true;
+
+  if (mode === 'currenttime') {
+    updateClock();
+    intervalId = setInterval(updateClock, 1000);
+  } else {
+    // retrieve paused seconds from firebase:
+    secondsPassed = xxx;
+
+    intervalId = setInterval(() => {
+      if (mode === 'timegoesup') {
+        secondsPassed++;
+      } else if (mode === 'timegoesdown') {
+        if (secondsPassed > 0) {
+          secondsPassed--;
+        } else {
+          pause();
+        }
+      }
+      updateDisplay();
+      pausedSeconds = secondsPassed;
+    }, 1000);
+  }
+}
+
+function pause() {
+  isRunning = false;
+  clearInterval(intervalId);
+  intervalId = null;
+}
+
+function reset() {
+  pause();
+  secondsPassed = (mode === 'timegoesdown') ? timerDuration : 0;
+  updateDisplay();
+}
+
+function updateDisplay() {
+  let display = '00:00';
+  if (mode === 'currenttime') return; // часы обновляются отдельно
+  const minutes = Math.floor(secondsPassed / 60).toString().padStart(2, '0');
+  const seconds = (secondsPassed % 60).toString().padStart(2, '0');
+  display = `${minutes}:${seconds}`;
+  timerText.textContent = display;
+}
+
+function updateClock() {
+  const now = new Date();
+  const h = now.getHours().toString().padStart(2, '0');
+  const m = now.getMinutes().toString().padStart(2, '0');
+  timerText.textContent = `${h}:${m}`;
+  // clock with seconds
+  // const s = now.getSeconds().toString().padStart(2, '0');
+  // timerText.textContent = `${h}:${m}:${s}`;
+}
+
+///////////////////////////////
+// toggle timer control panel
+function setupTimerButtons(timerType) {
+  // console.log(timerType);
+  if(timerType === 'currenttime') {
+    timerControllerGroup.classList.add('hidden');
+  } else {
+    timerControllerGroup.classList.remove('hidden');
+  }
+}
+
+////////////////////////////////////////////
+// upload control panel status on firebase
+// let timerButtons = timerControllerGroup.querySelectorAll('button');
+
+// timerButtons.forEach((el) => {
+//   el.addEventListener('click', () => {
+//     let timerStatus = 'pause';
+//     if(el.id === 'startBtn') {
+//       timerStatus = 'start';
+//     } else if (el.id === 'resetBtn') {
+//       timerStatus = 'reset';
+//     }
+//     uploadTimerStatus(timerStatus);
+//   });
+// });
+
+async function uploadTimerStatus(timerStatus) {
+  try {
+    await updateDoc(doc(db, 'rooms', auth.currentUser.uid), {
+      timerStatus: timerStatus
+    });
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+
+async function uploadPausedSeconds(pausedSeconds) {
+  try {
+    await updateDoc(doc(db, 'rooms', auth.currentUser.uid), {
+      pausedSeconds: pausedSeconds
+    });
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+
+startBtn.addEventListener('click', ()=>{
+  uploadTimerStatus('start');
+});
+
+pauseBtn.addEventListener('click', ()=>{
+  // console.log('===========> paused time: ' + pausedSeconds);
+  uploadTimerStatus('pause');
+  uploadPausedSeconds(pausedSeconds); // memorize paused seconds
+});
+
+resetBtn.addEventListener('click', ()=>{
+  uploadTimerStatus('reset');
+  uploadPausedSeconds(0); // reset paused seconds
+});

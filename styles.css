@@ -495,6 +495,38 @@ body:has(.gallery-card.active) {
   width: 90vmin;
 }
 
+.commander-container:has(.timer-card.active) {
+  mix-blend-mode: difference;
+}
+
+#timerControllerGroup.hidden {
+  display: none;
+}
+#timerControllerGroup {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-top: 1rem;
+}
+#timerControllerGroup button {
+  display: flex; /* remove white space */
+  cursor: pointer;
+  color: var(--light-color);
+
+  border: none;
+  background: none;
+}
+#timerControllerGroup button:hover {
+  color: var(--light-color-hover);
+}
+
+/* #timerControllerGroup button {
+  visibility: hidden; -- hide default button
+}
+#timerControllerGroup button svg {
+  visibility: visible; -- unhide graphics inside the button
+} */
+
 /*//////////  Responsive  //////////*/
 
 @media (max-width: 767px) {
