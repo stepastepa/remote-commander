@@ -105,7 +105,7 @@ onAuthStateChanged(auth, async (user) => {
         ],
         theme: 'f3f3f6+ffffff+0d0c22',
         timer: 'currenttime',
-        timerStatus: 'play',
+        timerStatus: 'start',
         type: 'message'
       });
       console.log("Создан профиль для нового пользователя");
@@ -127,7 +127,7 @@ onAuthStateChanged(auth, async (user) => {
     ],
     data.theme = data.theme || 'f3f3f6+ffffff+0d0c22',
     data.timer = data.timer || 'currenttime',
-    data.timerStatus = data.timerStatus || 'play',
+    data.timerStatus = data.timerStatus || 'start',
     data.type = data.type || 'message'
 
     console.log(data);
