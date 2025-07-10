@@ -451,12 +451,9 @@ editForm.addEventListener('submit', async (e) => {
       mediaLink: payload.mediaLink,
       message: payload.message,
       numberOfSlides: payload.numberOfSlides,
-      pausedSeconds: payload.pausedSeconds,
       slidesLinks: galleryData,
       theme: payload.theme==="magic+magic+magic"?`magic+magic+magic+${Math.random()}`:payload.theme,
-      timer: payload.timer,
-      timerStatus: payload.timerStatus,
-      type: payload.type
+      timer: payload.timer
     });
   } catch (err) {
     console.log(err.message);
