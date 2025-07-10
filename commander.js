@@ -116,19 +116,19 @@ onAuthStateChanged(auth, async (user) => {
     const data = roomSnap.data();
 
     // проверка на отсутствие некоторых полей у старых пользователей:
-    data.mediaLink || '',
-    data.message || 'Hello World!',
-    data.numberOfSlides || '3',
-    data.pausedSeconds || 0,
-    data.slidesLinks || [
+    data.mediaLink = data.mediaLink || '',
+    data.message = data.message || 'Hello World!',
+    data.numberOfSlides = data.numberOfSlides || '3',
+    data.pausedSeconds = data.pausedSeconds || 0,
+    data.slidesLinks = data.slidesLinks || [
       `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`,
       `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`,
       `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`
     ],
-    data.theme || 'F3F3F6+FFFFFF+191919',
-    data.timer || 'currenttime',
-    data.timerStatus || 'play',
-    data.type || 'message'
+    data.theme = data.theme || 'F3F3F6+FFFFFF+191919',
+    data.timer = data.timer || 'currenttime',
+    data.timerStatus = data.timerStatus || 'play',
+    data.type = data.type || 'message'
 
     console.log(data);
 
