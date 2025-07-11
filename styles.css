@@ -526,13 +526,14 @@ body:has(.gallery-card.active) {
 #timerControllerGroup button {
   display: flex; /* remove white space */
   cursor: pointer;
-  color: var(--message-bg);
+  color: var(--dark-color);
 
+  opacity: 0.2;
   border: none;
   background: none;
 }
 #timerControllerGroup button:hover {
-  opacity: 0.75;
+  opacity: 0.4;
 }
 
 /* #timerControllerGroup button {
