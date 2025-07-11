@@ -1,12 +1,13 @@
 #circularImageGroup {
-  --marker: var(--font-color);
-  --hand: var(--message-bg);
-  --bg: var(--body-bg);
-  --font: var(--message-bg);
-  --accent: deeppink;
+  /* --marker: var(--font-color); */
+  --hand-dynamic: var(--message-bg);
+  --accent: rgb(255, 63, 20);
+
+  --v: rgb(20, 118, 255);
+  font-family: "Hubballi", sans-serif;
 }
 
-.minute-markers {
+/* .minute-markers {
   fill: transparent;
   stroke: var(--marker);
   stroke-width: 10;
@@ -19,9 +20,10 @@
   stroke-width: 20;
   stroke-dasharray: 0.4 4.6;
   stroke-dashoffset: 0.2;
-}
+} */
+
 .hand {
-  stroke: var(--hand);
+  stroke: var(--dark-color);
   stroke-width: 2;
   stroke-linecap: round;
 }
@@ -29,19 +31,28 @@
   stroke-width: 7;
 }
 .hand-sec {
+  stroke-linecap: round;
   stroke: var(--accent);
+  stroke-width: 1.5;
 }
 .center {
-  fill: var(--bg);
+  fill: black;
   stroke: var(--accent);
-  stroke-width: 2;
+  stroke-width: 1.5;
+}
+.center-bottom {
+  fill: black;
 }
 .clock-text {
-  fill: var(--accent);
-  font-family: Arial, sans-serif;
+  fill: var(--dark-color);
   text-anchor: middle;
   cursor: pointer;
   user-select: none;
+  font-weight: normal;
+  stroke: var(--dark-color);
+  stroke-width: 1;
+  font-size: 20px;
+  opacity: 0.85;
 }
 
 #hourHandStroke.hidden,
@@ -50,10 +61,20 @@
 }
 #hourHandStroke .hand,
 #minHandStroke .hand {
-  stroke: black;
+  stroke: var(--dark-color);
   stroke-width: 6;
 }
 #hourHandStroke .hand-thick,
 #minHandStroke .hand-thick {
   stroke-width: 11;
+}
+
+#shadowGroupHour, #shadowGroupMinute {
+  filter: drop-shadow(0.5px 1px 1px hsl(0deg 0% 0% / 0.4));
+}
+
+#hourHandInner .hand,
+#minHandInner .hand {
+  stroke: var(--hand-dynamic);
+  stroke-width: 4;
 }

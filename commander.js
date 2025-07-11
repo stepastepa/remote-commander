@@ -198,35 +198,103 @@ onAuthStateChanged(auth, async (user) => {
     circularImageGroup.innerHTML = ''; // reset
     circularImageGroup.innerHTML = `
       <svg class="circular-clock" width="100%" height="100%" viewBox="-100 -100 200 200">
-        <circle class="minute-markers" cx="0" cy="0" r="95" pathlength="60"/>
-        <circle class="hour-markers" cx="0" cy="0" r="90" pathlength="60"/>
+        <!-- <circle class="minute-markers" cx="0" cy="0" r="95" pathlength="60"/>
+        <circle class="hour-markers" cx="0" cy="0" r="90" pathlength="60"/> -->
 
-        <text id="clockText" class="clock-text" x="45" y="5">00</text>
+        <g class="minute-markers-group">
 
-        <g id="hourHand">
-          <g id="hourHandStroke" class="hidden">
+        </g>
+        <g class="hour-markers-group">
+        
+        </g>
+
+        <text id="clockText" class="clock-text" x="0" y="-30">MON 31</text>
+
+        <g id="shadowGroupHour">
+          <g id="hourHand">
             <line class="hand" x1="0" y1="0" x2="0" y2="-50"/>
             <line class="hand hand-thick" x1="0" y1="-12" x2="0" y2="-50"/>
+            <g id="hourHandInner">
+              <line class="hand" x1="0" y1="-12" x2="0" y2="-50"/>
+            </g>
           </g>
-          <line class="hand" x1="0" y1="0" x2="0" y2="-50"/>
-          <line class="hand hand-thick" x1="0" y1="-12" x2="0" y2="-50"/>
         </g>
-        <g id="minHand">
-          <g id="minHandStroke" class="hidden">
+        <g id="shadowGroupMinute">
+          <g id="minHand">
             <line class="hand" x1="0" y1="0" x2="0" y2="-80"/>
             <line class="hand hand-thick" x1="0" y1="-12" x2="0" y2="-80"/>
+            <g id="minHandInner">
+              <line class="hand" x1="0" y1="-12" x2="0" y2="-80"/>
+            </g>
+            <circle class="center-bottom" r="3.5"/>
           </g>
-          <line class="hand" x1="0" y1="0" x2="0" y2="-80"/>
-          <line class="hand hand-thick" x1="0" y1="-12" x2="0" y2="-80"/>
-        </g>
-        <g id="secHand">
-          <line class="hand hand-sec" x1="0" y1="12" x2="0" y2="-80"/>
         </g>
 
-        <circle class="center" r="3"/>
+        <g id="secHand">
+          <line class="hand-sec" x1="0" y1="12" x2="0" y2="-80"/>
+          <circle class="center" r="1.5"/>
+        </g>
       </svg>
     `;
-    
+
+    ///////////// циферблат формируем /////////////
+
+    const minuteGroup = document.querySelector('.minute-markers-group');
+    const hourGroup = document.querySelector('.hour-markers-group');
+
+    const radiusOuter = 95;
+    const radiusOuterNarrow = 80;
+    const minuteLength = 6;
+    const hourLength = 15;
+
+    for (let i = 0; i < 60; i++) {
+      const angle = (i * 6) * Math.PI / 180;
+      const x1 = radiusOuter * Math.cos(angle);
+      const y1 = radiusOuter * Math.sin(angle);
+      const x2 = (radiusOuter - minuteLength) * Math.cos(angle);
+      const y2 = (radiusOuter - minuteLength) * Math.sin(angle);
+
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', x1);
+      line.setAttribute('y1', y1);
+      line.setAttribute('x2', x2);
+      line.setAttribute('y2', y2);
+      line.setAttribute('stroke', 'var(--dark-color)');
+      line.setAttribute('stroke-linecap', 'round');
+
+      // Каждая пятая засечка — темнее и толще
+      if (i % 5 === 0) {
+        line.setAttribute('stroke-width', '3');
+        line.setAttribute('opacity', '0.6');
+      } else {
+        line.setAttribute('stroke-width', '2');
+        line.setAttribute('opacity', '0.2');
+      }
+
+      minuteGroup.appendChild(line);
+    }
+
+    for (let i = 0; i < 12; i++) {
+      const angle = (i * 30) * Math.PI / 180;
+      const x1 = radiusOuterNarrow * Math.cos(angle);
+      const y1 = radiusOuterNarrow * Math.sin(angle);
+      const x2 = (radiusOuterNarrow - hourLength) * Math.cos(angle);
+      const y2 = (radiusOuterNarrow - hourLength) * Math.sin(angle);
+
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', x1);
+      line.setAttribute('y1', y1);
+      line.setAttribute('x2', x2);
+      line.setAttribute('y2', y2);
+      line.setAttribute('stroke', 'var(--dark-color)');
+      line.setAttribute('stroke-width', '4');
+      line.setAttribute('stroke-linecap', 'round');
+      line.setAttribute('opacity', '0.85');
+
+      hourGroup.appendChild(line);
+    }
+
+    // toggle between diffenent clocks
     if (data.clockType === 'circular' && data.timer === 'currenttime') {
       timerImageGroup.classList.add('hidden');
       circularImageGroup.classList.remove('hidden');
@@ -235,6 +303,9 @@ onAuthStateChanged(auth, async (user) => {
       timerImageGroup.classList.remove('hidden');
       circularImageGroup.classList.add('hidden');
     }
+
+    ////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////
 
     /////////// gallery card HTML setup /////////
     document.querySelector('.gallery-card').innerHTML = ''; // reset
@@ -247,9 +318,6 @@ onAuthStateChanged(auth, async (user) => {
     if(document.querySelector('.gallery-card').classList.contains('active')) {
       startShow(images);
     }
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////
 
     // color theme setup
     let themeColors = data.theme.split('+');
@@ -275,28 +343,34 @@ onAuthStateChanged(auth, async (user) => {
     // modify some themes for circular clock
     if ((messageBg === '#ffffff' || messageBg === '#FFFFFF') && (bodyBg === '#f3f3f6')) {
       // stroke effect visible
-      hourHandStroke.classList.remove('hidden');
-      minHandStroke.classList.remove('hidden');
+      // hourHandStroke.classList.remove('hidden');
+      // minHandStroke.classList.remove('hidden');
       // dark clock hands
       // hourHand.querySelectorAll('.hand').forEach((el)=>{el.style.stroke = "var(--marker)"});
       // minHand.querySelectorAll('.hand').forEach((el)=>{el.style.stroke = "var(--marker)"});
     } else {
       // stroke effect hidden
-      hourHandStroke.classList.add('hidden');
-      minHandStroke.classList.add('hidden');
+      // hourHandStroke.classList.add('hidden');
+      // minHandStroke.classList.add('hidden');
     }
     
     if (bodyBg === '#f3f3f6') {
-      // dark markers
-      document.querySelector('.minute-markers').style.stroke = "var(--dark-color)";
-      document.querySelector('.hour-markers').style.stroke = "var(--dark-color)"; 
+      // dark markers (1 ряд)
+      // document.querySelector('.minute-markers').style.stroke = "var(--dark-color)";
+      // document.querySelector('.hour-markers').style.stroke = "var(--dark-color)"; 
     } else {
-
+      //
     }
 
     if (bodyBg === '#8E8E93') {
-      // golden accent
+      // golden accent for darkish bg color theme
       circularImageGroup.style.setProperty('--accent', 'gold');
+    } else if (messageBg === '#FF2D55') {
+      // green accent for reddish hand color theme
+      circularImageGroup.style.setProperty('--accent', 'rgb(67, 220, 17)');
+    } else if (messageBg === '#FFCC00') {
+      // blue accent for yellowish hand color theme
+      circularImageGroup.style.setProperty('--accent', 'rgb(20, 118, 255)');
     } else {
       circularImageGroup.removeAttribute('style');
     }
@@ -897,18 +971,20 @@ resetBtn.addEventListener('click', ()=>{
 //////////////////////////
 
 function setupCircularClock() {
-  let showDate = false;
+  let showDate = true;
 
   function animateClock() {
     const date = new Date();
+    const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
+    const dayName = days[date.getDay()];
     const day = date.getDate();
     const amPm = date.getHours() >= 12 ? "PM" : "AM";
     const hour = date.getHours() + date.getMinutes() / 60; // плавный ход
     const min = date.getMinutes() + date.getSeconds() / 60; // плавный ход
     const sec = date.getSeconds() + date.getMilliseconds() / 1000; // плавный ход
 
-    clockText.textContent = showDate ? day : amPm;
+    clockText.textContent = showDate ? `${dayName} ${day}` : amPm;
     hourHand.setAttribute('transform', `rotate(${(360 / 12) * hour})`);
     minHand.setAttribute('transform', `rotate(${(360 / 60) * min})`);
     secHand.setAttribute('transform', `rotate(${(360 / 60) * sec})`);
