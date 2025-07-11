@@ -50,6 +50,8 @@ const db = getFirestore(app);
 
 // импортируем палитру цветов
 import themes from './themes.js';
+// детектор свайпов
+import { swipeListener } from './components/swipeListener.js';
 
 ////////////////////////////////////////
 //////////     room setup     //////////
@@ -689,6 +691,54 @@ async function activateRoomType(selectedType) {
   } catch (err) {
     console.log(err.message);
   }
+}
+
+// toggle with swipes
+swipeListener(
+  () => {
+    console.log('Свайп влево!');
+    if(timerBtn.classList.contains('active')) {
+      timerBtn.classList.remove('active');
+      galleryBtn.classList.add('active');
+    } else if (galleryBtn.classList.contains('active')) {
+      galleryBtn.classList.remove('active');
+      messageBtn.classList.add('active');
+    } else if (messageBtn.classList.contains('active')) {
+      messageBtn.classList.remove('active');
+      timerBtn.classList.add('active');
+    }
+
+    activateRoomType(getSelectedType());
+  },
+  () => {
+    console.log('Свайп вправо!');
+    if(timerBtn.classList.contains('active')) {
+      timerBtn.classList.remove('active');
+      messageBtn.classList.add('active');
+    } else if (galleryBtn.classList.contains('active')) {
+      galleryBtn.classList.remove('active');
+      timerBtn.classList.add('active');
+    } else if (messageBtn.classList.contains('active')) {
+      messageBtn.classList.remove('active');
+      galleryBtn.classList.add('active');
+    }
+
+    activateRoomType(getSelectedType());
+  }
+);
+
+function getSelectedType() {
+  let activeBtn = roomToggle.querySelector('.active');
+
+  let selectedType = '';
+  if(activeBtn.id === 'timerBtn') {
+    selectedType = 'timer';
+  } else if (activeBtn.id === 'galleryBtn') {
+    selectedType = 'gallery';
+  } else if (activeBtn.id === 'messageBtn') {
+    selectedType = 'message';
+  }
+  return selectedType;
 }
 
 /////////////////////////////////////////
