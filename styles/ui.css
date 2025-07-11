@@ -37,8 +37,8 @@ html {
   display: flex;
   gap: 0.25rem;
 }
-#roomToggle,
-#options {
+#app:has(.gallery-card.active) #roomToggle,
+#app:has(.gallery-card.active) #options {
   mix-blend-mode: difference;
 }
 #logo a,
@@ -49,7 +49,7 @@ html {
 #galleryBtn,
 #messageBtn {
   position: relative;
-  color: var(--light-color);
+  color: var(--dark-color);
   line-height: 1;
   display: flex;
   justify-content: center;
@@ -58,18 +58,18 @@ html {
   width: 2rem;
   text-decoration: none;
   cursor: pointer;
+  opacity: 0.4;
 }
 #editBtn {
   top: -1px;
 }
-#logo a:hover,
-#closeBtn:hover,
-#editBtn:hover,
-#fullscreenBtn:hover,
-#timerBtn:hover:not(.active),
-#galleryBtn:hover:not(.active),
-#messageBtn:hover:not(.active) {
-  color: var(--light-color-hover);
+#app #logo a:hover,
+#app #closeBtn:hover,
+#app #editBtn:hover,
+#app #fullscreenBtn:hover,
+#app #timerBtn:hover:not(.active),
+#app #galleryBtn:hover:not(.active),
+#app #messageBtn:hover:not(.active) {
   opacity: 1;
 }
 #logo a {
@@ -89,13 +89,13 @@ html {
 
 .toggle-container {
   display: flex;
-  box-shadow: 0 0 0 2px hsl(0deg 0% 45% / 1);
+  box-shadow: 0 0 0 2px hsl(243deg 48% 9% / 0.4);
   border-radius: 0.25rem;
   padding-left: 0.2rem;
   padding-right: 0.2rem;
 }
-.toggle-container div:not(.active) {
-  opacity: 0.3;
+#app .toggle-container div:not(.active) {
+  opacity: 0.15;
 }
 
 /*//////  modified for gallery  //////*/
@@ -104,9 +104,16 @@ html {
 #app:has(.gallery-card.active) #roomToggle .toggle-container>*,
 #app:has(.gallery-card.active) #options>* {
   color: #fff;
+  opacity: 1;
 }
 #app:has(.gallery-card.active) .toggle-container {
   box-shadow: 0 0 0 2px white;
+}
+#app:has(.gallery-card.active) #roomToggle .toggle-container div:not(.active) {
+  opacity: 0.4;
+}
+#app:has(.gallery-card.active) #roomToggle .toggle-container div:not(.active):hover {
+  opacity: 1;
 }
 
 /*//////////  Main Dark Buttons  //////////*/

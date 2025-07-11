@@ -527,13 +527,13 @@ body:has(.gallery-card.active) {
   display: flex; /* remove white space */
   cursor: pointer;
   color: var(--dark-color);
+  opacity: 0.4;
 
-  opacity: 0.2;
   border: none;
   background: none;
 }
 #timerControllerGroup button:hover {
-  opacity: 0.4;
+  opacity: 1;
 }
 
 /* #timerControllerGroup button {
