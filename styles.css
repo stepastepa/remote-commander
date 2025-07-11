@@ -1,5 +1,6 @@
 @import url(./styles/reset.css);
 @import url(./styles/ui.css);
+@import url(./styles/clock.css);
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
@@ -319,9 +320,8 @@ footer>span {
   left: 50%;
   bottom: 0;
   transform: translate(-50%, calc(100% + 0.5rem));
-  color: var(--light-color);
+  color: var(--dark-color);
   font-size: 0.75rem;
-  mix-blend-mode: difference;
 }
 
 /*//////////  Edit Menu  //////////*/
@@ -416,6 +416,11 @@ footer>span {
   gap: 0.5rem;
   grid-template-columns: 1fr 1fr 1fr;
 }
+#clocksContainer {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 1fr 1fr;
+}
 .timer-option {
   position: relative;
   cursor: pointer;
@@ -493,16 +498,26 @@ body:has(.gallery-card.active) {
 
 .timer-card {
   width: 90vmin;
+  position: relative;
 }
 
-.commander-container:has(.timer-card.active) {
+/* .commander-container:has(.timer-card.active) {
   mix-blend-mode: difference;
+} */
+
+#timerImageGroup.hidden,
+#circularImageGroup.hidden {
+  display: none;
 }
 
 #timerControllerGroup.hidden {
   display: none;
 }
 #timerControllerGroup {
+  position: fixed;
+  left: 0;
+  right: 0;
+
   display: flex;
   justify-content: center;
   gap: 0.5rem;
@@ -511,13 +526,13 @@ body:has(.gallery-card.active) {
 #timerControllerGroup button {
   display: flex; /* remove white space */
   cursor: pointer;
-  color: var(--light-color);
+  color: var(--message-bg);
 
   border: none;
   background: none;
 }
 #timerControllerGroup button:hover {
-  color: var(--light-color-hover);
+  opacity: 0.75;
 }
 
 /* #timerControllerGroup button {

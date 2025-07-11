@@ -1,0 +1,59 @@
+#circularImageGroup {
+  --marker: var(--font-color);
+  --hand: var(--message-bg);
+  --bg: var(--body-bg);
+  --font: var(--message-bg);
+  --accent: deeppink;
+}
+
+.minute-markers {
+  fill: transparent;
+  stroke: var(--marker);
+  stroke-width: 10;
+  stroke-dasharray: 0.1 0.9;
+  stroke-dashoffset: 0.05;
+}
+.hour-markers {
+  fill: transparent;
+  stroke: var(--marker);
+  stroke-width: 20;
+  stroke-dasharray: 0.4 4.6;
+  stroke-dashoffset: 0.2;
+}
+.hand {
+  stroke: var(--hand);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.hand-thick {
+  stroke-width: 7;
+}
+.hand-sec {
+  stroke: var(--accent);
+}
+.center {
+  fill: var(--bg);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+.clock-text {
+  fill: var(--accent);
+  font-family: Arial, sans-serif;
+  text-anchor: middle;
+  cursor: pointer;
+  user-select: none;
+}
+
+#hourHandStroke.hidden,
+#minHandStroke.hidden {
+  display: none;
+}
+#hourHandStroke .hand,
+#minHandStroke .hand {
+  stroke: black;
+  stroke-width: 6;
+}
+#hourHandStroke .hand-thick,
+#minHandStroke .hand-thick {
+  stroke-width: 11;
+}

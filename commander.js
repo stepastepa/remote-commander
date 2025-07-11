@@ -107,7 +107,8 @@ onAuthStateChanged(auth, async (user) => {
         timer: 'currenttime',
         timerStatus: 'start',
         type: 'message',
-        timeForTimer: 0
+        timeForTimer: 0,
+        clockType: 'circular'
       });
       console.log("Создан профиль для нового пользователя");
       return; // Ждём следующего срабатывания onSnapshot
@@ -130,7 +131,8 @@ onAuthStateChanged(auth, async (user) => {
     data.timer = data.timer || 'currenttime',
     data.timerStatus = data.timerStatus || 'start',
     data.type = data.type || 'message',
-    data.timeForTimer = data.timeForTimer || 0
+    data.timeForTimer = data.timeForTimer || 0,
+    data.clockType = data.clockType || 'circular'
 
     console.log(data);
 
@@ -174,10 +176,10 @@ onAuthStateChanged(auth, async (user) => {
     /////////// timer card HTML setup ///////////
     timerImageGroup.innerHTML = ''; // reset
     timerImageGroup.innerHTML = `
-      <svg width="100%" height="100%" viewBox="0 0 48 24">
+      <svg class="numeric-clock" width="100%" height="100%" viewBox="0 0 48 24">
         <g fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <!-- <rect x="1" y="1" width="46" height="22" rx="5" ry="5" stroke="var(--message-bg)"></rect>
-          <rect x="4" y="4" width="40" height="16" rx="2" ry="2" stroke="none" fill="var(--message-bg)" stroke-width="1"></rect> -->
+          <!-- <rect x="1" y="1" width="46" height="22" rx="5" ry="5" stroke="var(--message-bg)"></rect> -->
+          <rect x="4" y="4" width="40" height="16" rx="2" ry="2" stroke="none" fill="var(--message-bg)" stroke-width="1"></rect>
           <text
             id="timerText"
             x="50%"
@@ -187,12 +189,52 @@ onAuthStateChanged(auth, async (user) => {
             text-anchor="middle"
             dominant-baseline="middle"
             font-family="monospace"
-            fill="var(--light-color)"
+            fill="var(--font-color)"
             stroke="none"
           >00:00</text>
         </g>
       </svg>
     `;
+    circularImageGroup.innerHTML = ''; // reset
+    circularImageGroup.innerHTML = `
+      <svg class="circular-clock" width="100%" height="100%" viewBox="-100 -100 200 200">
+        <circle class="minute-markers" cx="0" cy="0" r="95" pathlength="60"/>
+        <circle class="hour-markers" cx="0" cy="0" r="90" pathlength="60"/>
+
+        <text id="clockText" class="clock-text" x="45" y="5">00</text>
+
+        <g id="hourHand">
+          <g id="hourHandStroke" class="hidden">
+            <line class="hand" x1="0" y1="0" x2="0" y2="-50"/>
+            <line class="hand hand-thick" x1="0" y1="-12" x2="0" y2="-50"/>
+          </g>
+          <line class="hand" x1="0" y1="0" x2="0" y2="-50"/>
+          <line class="hand hand-thick" x1="0" y1="-12" x2="0" y2="-50"/>
+        </g>
+        <g id="minHand">
+          <g id="minHandStroke" class="hidden">
+            <line class="hand" x1="0" y1="0" x2="0" y2="-80"/>
+            <line class="hand hand-thick" x1="0" y1="-12" x2="0" y2="-80"/>
+          </g>
+          <line class="hand" x1="0" y1="0" x2="0" y2="-80"/>
+          <line class="hand hand-thick" x1="0" y1="-12" x2="0" y2="-80"/>
+        </g>
+        <g id="secHand">
+          <line class="hand hand-sec" x1="0" y1="12" x2="0" y2="-80"/>
+        </g>
+
+        <circle class="center" r="3"/>
+      </svg>
+    `;
+    
+    if (data.clockType === 'circular' && data.timer === 'currenttime') {
+      timerImageGroup.classList.add('hidden');
+      circularImageGroup.classList.remove('hidden');
+      setupCircularClock();
+    } else {
+      timerImageGroup.classList.remove('hidden');
+      circularImageGroup.classList.add('hidden');
+    }
 
     /////////// gallery card HTML setup /////////
     document.querySelector('.gallery-card').innerHTML = ''; // reset
@@ -230,6 +272,36 @@ onAuthStateChanged(auth, async (user) => {
     root.style.setProperty('--message-bg', messageBg);
 
     ////////////////////////////////////////////////////
+    // modify some themes for circular clock
+    if ((messageBg === '#ffffff' || messageBg === '#FFFFFF') && (bodyBg === '#f3f3f6')) {
+      // stroke effect visible
+      hourHandStroke.classList.remove('hidden');
+      minHandStroke.classList.remove('hidden');
+      // dark clock hands
+      // hourHand.querySelectorAll('.hand').forEach((el)=>{el.style.stroke = "var(--marker)"});
+      // minHand.querySelectorAll('.hand').forEach((el)=>{el.style.stroke = "var(--marker)"});
+    } else {
+      // stroke effect hidden
+      hourHandStroke.classList.add('hidden');
+      minHandStroke.classList.add('hidden');
+    }
+    
+    if (bodyBg === '#f3f3f6') {
+      // dark markers
+      document.querySelector('.minute-markers').style.stroke = "var(--dark-color)";
+      document.querySelector('.hour-markers').style.stroke = "var(--dark-color)"; 
+    } else {
+
+    }
+
+    if (bodyBg === '#8E8E93') {
+      // golden accent
+      circularImageGroup.style.setProperty('--accent', 'gold');
+    } else {
+      circularImageGroup.removeAttribute('style');
+    }
+
+    ////////////////////////////////////////////////////
     // fill inputs fields
     messageInput.value = data.message || '';
     mediaLinkInput.value = data.mediaLink || '';
@@ -265,7 +337,7 @@ onAuthStateChanged(auth, async (user) => {
       });
     }
 
-    /////  timer inputs  /////
+    /////  timer/clock inputs  /////
     let timerInputs = timersContainer.querySelectorAll('input');
     timerInputs.forEach((el) => {
         el.removeAttribute('checked'); // reset timer inputs
@@ -276,6 +348,15 @@ onAuthStateChanged(auth, async (user) => {
       timerInputs[1].setAttribute('checked', '');
     } else {
       timerInputs[2].setAttribute('checked', '');
+    }
+    let clockInputs = clocksContainer.querySelectorAll('input');
+    clockInputs.forEach((el) => {
+        el.removeAttribute('checked'); // reset clock inputs
+    });
+    if(data.clockType === 'circular') {
+      clockInputs[0].setAttribute('checked', '');
+    } else {
+      clockInputs[1].setAttribute('checked', '');
     }
 
     // switch mode and clean previous timer
@@ -465,7 +546,8 @@ editForm.addEventListener('submit', async (e) => {
       theme: payload.theme==="magic+magic+magic"?`magic+magic+magic+${Math.random()}`:payload.theme,
       timer: payload.timer,
       timeForTimer: calculateSecondsForTimer(),
-      timerStatus: 'start' // auto switch to start
+      timerStatus: 'start', // auto switch to start
+      clockType: payload.clockType
     });
   } catch (err) {
     console.log(err.message);
@@ -743,7 +825,7 @@ function updateClock() {
 // toggle timer control panel
 function setupTimerButtons(timerType) {
   // console.log(timerType);
-  if(timerType === 'currenttime') {
+  if (timerType === 'currenttime') {
     timerControllerGroup.classList.add('hidden');
   } else {
     timerControllerGroup.classList.remove('hidden');
@@ -809,3 +891,33 @@ resetBtn.addEventListener('click', ()=>{
   uploadTimerStatus('reset');
   uploadPausedSeconds(0, 0); // reset paused seconds
 });
+
+//////////////////////////
+//    circular clock    //
+//////////////////////////
+
+function setupCircularClock() {
+  let showDate = false;
+
+  function animateClock() {
+    const date = new Date();
+
+    const day = date.getDate();
+    const amPm = date.getHours() >= 12 ? "PM" : "AM";
+    const hour = date.getHours() + date.getMinutes() / 60; // плавный ход
+    const min = date.getMinutes() + date.getSeconds() / 60; // плавный ход
+    const sec = date.getSeconds() + date.getMilliseconds() / 1000; // плавный ход
+
+    clockText.textContent = showDate ? day : amPm;
+    hourHand.setAttribute('transform', `rotate(${(360 / 12) * hour})`);
+    minHand.setAttribute('transform', `rotate(${(360 / 60) * min})`);
+    secHand.setAttribute('transform', `rotate(${(360 / 60) * sec})`);
+
+    requestAnimationFrame(animateClock);
+  }
+  requestAnimationFrame(animateClock);
+
+  clockText.addEventListener('click', () => {
+    showDate = !showDate;
+  });
+}
