@@ -236,7 +236,7 @@ onAuthStateChanged(auth, async (user) => {
 
         <g id="secHand">
           <line class="hand-sec" x1="0" y1="12" x2="0" y2="-80"/>
-          <circle class="center" r="1.5"/>
+          <circle class="center" r="1.8"/>
         </g>
       </svg>
     `;
