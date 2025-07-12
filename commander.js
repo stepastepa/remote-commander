@@ -100,6 +100,7 @@ onAuthStateChanged(auth, async (user) => {
         message: 'Hello World!',
         numberOfSlides: '3',
         pausedSeconds: 0,
+        pausedSecondsTimer: 0,
         slidesLinks: [
           `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`,
           `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`,
@@ -124,6 +125,7 @@ onAuthStateChanged(auth, async (user) => {
     data.message = data.message || 'Hello World!',
     data.numberOfSlides = data.numberOfSlides || '3',
     data.pausedSeconds = data.pausedSeconds || 0,
+    data.pausedSecondsTimer = data.pausedSecondsTimer || 0,
     data.slidesLinks = data.slidesLinks || [
       `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`,
       `https://picsum.photos/seed/${randomNumber(1,9999)}/1920/1080`,
@@ -175,7 +177,7 @@ onAuthStateChanged(auth, async (user) => {
       addMedia(data.mediaLink);
     }
 
-    /////////// timer card HTML setup ///////////
+    /////////// 🟡🟡🟡 timer card HTML setup 🟡🟡🟡 ///////////
     timerImageGroup.innerHTML = ''; // reset
     timerImageGroup.innerHTML = `
       <svg class="numeric-clock" width="100%" height="100%" viewBox="0 0 48 24">
@@ -378,7 +380,7 @@ onAuthStateChanged(auth, async (user) => {
     }
 
     ////////////////////////////////////////////////////
-    // fill inputs fields
+    // 🟢 fill inputs fields
     messageInput.value = data.message || '';
     mediaLinkInput.value = data.mediaLink || '';
     numberOfSlidesInput.value = data.numberOfSlides || '5';
@@ -436,11 +438,27 @@ onAuthStateChanged(auth, async (user) => {
     }
 
     // switch mode and clean previous timer
-    switchMode(data.timer, data.pausedSeconds, data.timeForTimer);
+    if (data.timer === 'timegoesup') {
+      switchMode(data.timer, data.pausedSeconds);
+    } else if (data.timer === 'timegoesdown') {
+      switchMode(data.timer, '', data.timeForTimer, data.pausedSecondsTimer);
+    } else {
+      switchMode(data.timer);
+    }
 
     // update paused seconds
     pausedSeconds = data.pausedSeconds;
+    pausedSecondsTimer = data.pausedSecondsTimer;
     timerSeconds = data.timeForTimer;
+
+    // 🟢🟢🟢 fill timeSet inputs for timer 🟢🟢🟢
+    let h = Math.floor(timerSeconds / 3600);
+    let m = Math.floor((timerSeconds % 3600) / 60);
+    let s = timerSeconds % 60;
+
+    hours.value = h > 0 ? h : '';
+    minutes.value = m > 0 ? m : '';
+    seconds.value = s > 0 ? s : '';
 
     // set status for timer
     if (data.type === 'timer') {
@@ -448,7 +466,7 @@ onAuthStateChanged(auth, async (user) => {
         start();
       } else {
         console.log(data.timerStatus);
-        if (data.timerStatus === 'start') start(pausedSeconds, timerSeconds);
+        if (data.timerStatus === 'start') start(pausedSeconds, timerSeconds, pausedSecondsTimer);
         if (data.timerStatus === 'pause') pause();
         if (data.timerStatus === 'reset') reset();
       }
@@ -570,9 +588,9 @@ function toggleFullscreenImg(e) {
   e.target.classList.toggle('fullscreen');
 }
 
-////////////////////////////////////////////////////////////
-////////////////////     room update     ///////////////////
-////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+/////////////     🟣🟣🟣 room update 🟣🟣🟣     ////////////
+///////////////////////////////////////////////////////////
 
 // toggle ON/OFF
 const fadedBG = document.querySelector('.bg-fading');
@@ -605,11 +623,6 @@ editForm.addEventListener('submit', async (e) => {
   // console.log(slides[0].value);
   for(let i = 0; i < slides.length; i++) {
     galleryData.push(slides[i].value);
-  }
-
-  // setup time for timer
-  function calculateSecondsForTimer() {
-    return (+hours.value*60*60) + (+minutes.value*60) + (+seconds.value);
   } 
 
   ////////////////////////////////////////////////////////////////////////
@@ -623,7 +636,8 @@ editForm.addEventListener('submit', async (e) => {
       timer: payload.timer,
       timeForTimer: calculateSecondsForTimer(),
       timerStatus: 'start', // auto switch to start
-      clockType: payload.clockType
+      clockType: payload.clockType,
+      updater: Math.random() // 🟣🟣🟣 it always uploads something unique !!!
     });
   } catch (err) {
     console.log(err.message);
@@ -846,9 +860,9 @@ function randomNumber(x, y) {
   return Math.floor(Math.random() * (+y)) + (+x);
 }
 
-////////////////////////////
-//    Timer Controller    //
-////////////////////////////
+/////////////////////////////////////////
+//    🟠🟠🟠 Timer Controller 🟠🟠🟠    //
+/////////////////////////////////////////
 
 // default Data for Timer
 let intervalId = null;
@@ -857,6 +871,7 @@ let secondsPassed = 0;
 let mode = 'timegoesup';
 let isRunning = false;
 let pausedSeconds = 0;
+let pausedSecondsTimer = 0;
 let timerSeconds = 0;
 
 // startBtn.addEventListener('click', start);
@@ -875,17 +890,20 @@ let timerSeconds = 0;
 //   }, 1000);
 // }
 
-function switchMode(newMode, pausedSeconds, timerSeconds) {
+
+function switchMode(newMode, pausedSeconds, timerSeconds, pausedSecondsTimer) {
   pause();
   mode = newMode;
 
   // retrieve current seconds from firebase:
-  secondsPassed = pausedSeconds;
-  if (mode === 'timegoesdown') secondsPassed = timerSeconds;
+  if (pausedSeconds) secondsPassed = pausedSeconds;
+  if (timerSeconds)  secondsPassed = timerSeconds;
+  if (pausedSecondsTimer) secondsPassed = pausedSecondsTimer;
+  // 🟧🟧🟧
   updateDisplay();
 }
 
-function start(xxx, yyy) {
+function start(xxx, yyy, ttt) {
   if (isRunning) return;
   isRunning = true;
 
@@ -895,7 +913,8 @@ function start(xxx, yyy) {
   } else {
     // retrieve current seconds from firebase:
     secondsPassed = xxx;
-    if (mode === 'timegoesdown') secondsPassed = yyy;
+    if (mode === 'timegoesdown') secondsPassed = ttt;
+    // 🟧🟧🟧
 
     intervalId = setInterval(() => {
       if (mode === 'timegoesup') {
@@ -909,7 +928,7 @@ function start(xxx, yyy) {
       }
       updateDisplay();
       pausedSeconds = secondsPassed;
-      if (mode === 'timegoesdown') timerSeconds = secondsPassed;
+      if (mode === 'timegoesdown') pausedSecondsTimer = secondsPassed;
     }, 1000);
   }
 }
@@ -922,7 +941,8 @@ function pause() {
 
 function reset() {
   pause();
-  secondsPassed = 0;
+  if (mode === 'timegoesup') secondsPassed = 0;
+  if (mode === 'timegoesdown') secondsPassed = calculateSecondsForTimer();
   updateDisplay();
 }
 
@@ -982,7 +1002,7 @@ async function uploadTimerStatus(timerStatus) {
   }
 }
 
-async function uploadPausedSeconds(pausedSeconds, timerSeconds) {
+async function uploadPausedSeconds(pausedSeconds, pausedSecondsTimer) {
   if (mode === 'timegoesup') {
     try {
       await updateDoc(doc(db, 'rooms', auth.currentUser.uid), {
@@ -994,7 +1014,7 @@ async function uploadPausedSeconds(pausedSeconds, timerSeconds) {
   } else if (mode === 'timegoesdown') {
     try {
       await updateDoc(doc(db, 'rooms', auth.currentUser.uid), {
-        timeForTimer: timerSeconds
+        pausedSecondsTimer: pausedSecondsTimer
       });
     } catch (err) {
       console.log(err.message);
@@ -1008,13 +1028,18 @@ startBtn.addEventListener('click', ()=>{
 
 pauseBtn.addEventListener('click', ()=>{
   uploadTimerStatus('pause');
-  uploadPausedSeconds(pausedSeconds, timerSeconds); // memorize paused seconds
+  uploadPausedSeconds(pausedSeconds, pausedSecondsTimer); // memorize paused seconds
 });
 
 resetBtn.addEventListener('click', ()=>{
   uploadTimerStatus('reset');
-  uploadPausedSeconds(0, 0); // reset paused seconds
+  uploadPausedSeconds(0, calculateSecondsForTimer()); // reset seconds to zero or to initial value
 });
+
+// setup current time for timer from inputs
+function calculateSecondsForTimer() {
+  return (+hours.value*60*60) + (+minutes.value*60) + (+seconds.value);
+}
 
 //////////////////////////
 //    circular clock    //
