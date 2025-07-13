@@ -498,7 +498,7 @@ body:has(.gallery-card.active) {
 /*//////////  Timer Card  //////////*/
 
 .timer-card {
-  width: 90vmin;
+  width: 100vw;
   position: relative;
 }
 
@@ -518,11 +518,12 @@ body:has(.gallery-card.active) {
   position: fixed;
   left: 0;
   right: 0;
+  bottom: 0;
 
   display: flex;
   justify-content: center;
   gap: 0.5rem;
-  padding-top: 1rem;
+  padding-bottom: calc(10vh - 12px);
 }
 #timerControllerGroup button {
   display: flex; /* remove white space */

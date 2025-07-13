@@ -180,14 +180,13 @@ onAuthStateChanged(auth, async (user) => {
     /////////// 🟡🟡🟡 timer card HTML setup 🟡🟡🟡 ///////////
     timerImageGroup.innerHTML = ''; // reset
     timerImageGroup.innerHTML = `
-      <svg class="numeric-clock" width="100%" height="100%" viewBox="0 0 48 24">
+      <svg class="numeric-clock" width="100%" height="100%" viewBox="-24 -24 48 48">
         <g fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <!-- <rect x="1" y="1" width="46" height="22" rx="5" ry="5" stroke="var(--message-bg)"></rect> -->
-          <rect x="4" y="4" width="40" height="16" rx="2" ry="2" stroke="none" fill="var(--message-bg)" stroke-width="1"></rect>
+          <rect x="-40%" y="-30%" width="80%" height="60%" rx="2" ry="2" stroke="none" fill="var(--message-bg)" stroke-width="1"></rect>
           <text
             id="timerText"
-            x="50%"
-            y="53%"
+            x="0"
+            y="0"
             font-size="10"
             font-weight="bold"
             text-anchor="middle"
@@ -212,37 +211,79 @@ onAuthStateChanged(auth, async (user) => {
         
         </g>
 
-        <text id="clockText" class="clock-text" x="0" y="-30">MON 31</text>
+        <text id="clockText" class="clock-text" x="0" y="-17%">MON 31</text>
 
         <g id="shadowGroupHour">
           <g id="hourHand">
-            <line class="hand" x1="0" y1="0" x2="0" y2="-50"/>
-            <line class="hand hand-thick" x1="0" y1="-12" x2="0" y2="-50"/>
+            <line class="hand" x1="0" y1="0" x2="0" y2="-42"/>
+            <line class="hand hand-thick" x1="0" y1="-12" x2="0" y2="-42"/>
             <g id="hourHandInner">
-              <line class="hand" x1="0" y1="-12" x2="0" y2="-50"/>
+              <line class="hand" x1="0" y1="-12" x2="0" y2="-42"/>
             </g>
           </g>
         </g>
         <g id="shadowGroupMinute">
           <g id="minHand">
-            <line class="hand" x1="0" y1="0" x2="0" y2="-80"/>
-            <line class="hand hand-thick" x1="0" y1="-12" x2="0" y2="-80"/>
+            <line class="hand" x1="0" y1="0" x2="0" y2="-84"/>
+            <line class="hand hand-thick" x1="0" y1="-12" x2="0" y2="-84"/>
             <g id="minHandInner">
-              <line class="hand" x1="0" y1="-12" x2="0" y2="-80"/>
+              <line class="hand" x1="0" y1="-12" x2="0" y2="-84"/>
             </g>
             <circle class="center-bottom" r="3.5"/>
           </g>
         </g>
 
         <g id="secHand">
-          <line class="hand-sec" x1="0" y1="12" x2="0" y2="-80"/>
+          <line class="hand-sec" x1="0" y1="12" x2="0" y2="-84"/>
           <circle class="center" r="1.8"/>
         </g>
       </svg>
     `;
 
-    ///////////// циферблат формируем /////////////
+    ///////////// узнаем пропорцию экрана для viewbox /////////////
+    let windowProportion = window.innerWidth / window.innerHeight;
+    function calcViewbox(minSize) {
+      windowProportion = window.innerWidth / window.innerHeight;
+      let width = windowProportion > 1 ? minSize * windowProportion : minSize;
+      let height = windowProportion > 1 ? minSize : minSize / windowProportion;
+      let x = -(width / 2);
+      let y = -(height / 2);
+      return `${x} ${y} ${width} ${height}`;
+    }
 
+    function setViewboxAndDrawClock(svgElement, minSize) {
+      // Задаем начальный viewBox
+      svgElement.setAttribute('viewBox', calcViewbox(minSize));
+      // рисуем часы
+      clockConstruction(svgElement);
+
+      // Слушаем resize
+      window.addEventListener('resize', () => {
+        svgElement.setAttribute('viewBox', calcViewbox(minSize));
+        // рисуем часы
+        clockConstruction(svgElement);
+      });
+    }
+
+    function clockConstruction(svgElement) {
+      const [x, y, width, height] = svgElement.getAttribute('viewBox').split(' ').map(Number);
+      
+      let minuteGroup = document.querySelector('.minute-markers-group');
+      let hourGroup = document.querySelector('.hour-markers-group');
+
+      // Удаляем старые линии:
+      minuteGroup.innerHTML = '';
+      hourGroup.innerHTML = '';
+      
+      createMarkers(minuteGroup, hourGroup, width, height);
+    }
+
+    setViewboxAndDrawClock(timerImageGroup.querySelector('svg'), 48);
+    setViewboxAndDrawClock(circularImageGroup.querySelector('svg'), 200);
+
+    ///////////// циферблат формируем /////////////
+    /*
+    // простой круглый циферблат
     const minuteGroup = document.querySelector('.minute-markers-group');
     const hourGroup = document.querySelector('.hour-markers-group');
 
@@ -297,6 +338,92 @@ onAuthStateChanged(auth, async (user) => {
 
       hourGroup.appendChild(line);
     }
+    */
+
+    // динамический прямоугольный циферблат как у Apple Watch
+    function createMarkers(minuteGroup, hourGroup, width, height) {
+      const halfWidth = width / 2;
+      const halfHeight = height / 2;
+
+      // const minuteOffset = 5; // отступ для минутной засечки
+      // const hourOffset = 15;  // отступ для часовой засечки
+
+      for (let i = 0; i < 60; i++) {
+        const angle = (i * 6) * Math.PI / 180;
+        const cosA = Math.cos(angle);
+        const sinA = Math.sin(angle);
+
+        // Пересечение с прямоугольником
+        let rX = (halfWidth * 0.97) / Math.abs(cosA);
+        let rY = (halfHeight * 0.97) / Math.abs(sinA);
+
+        // Если cos или sin равен нулю, избегаем деления на ноль
+        if (Math.abs(cosA) < 0.0001) rX = Infinity;
+        if (Math.abs(sinA) < 0.0001) rY = Infinity;
+
+        const r = Math.min(rX, rY);
+        let minuteOffset = r * 0.05;
+
+        // Новый: фиксируем отступ от края
+        const x1 = cosA * r;
+        const y1 = sinA * r;
+        const x2 = cosA * (r - minuteOffset);
+        const y2 = sinA * (r - minuteOffset);
+
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', x1);
+        line.setAttribute('y1', y1);
+        line.setAttribute('x2', x2);
+        line.setAttribute('y2', y2);
+        line.setAttribute('stroke', 'var(--dark-color)');
+        line.setAttribute('stroke-linecap', 'round');
+
+        if (i % 5 === 0) {
+          line.setAttribute('stroke-width', '3');
+          line.setAttribute('opacity', '0.6');
+        } else {
+          line.setAttribute('stroke-width', '2');
+          line.setAttribute('opacity', '0.2');
+        }
+
+        minuteGroup.appendChild(line);
+      }
+
+      for (let i = 0; i < 12; i++) {
+        const angle = (i * 30) * Math.PI / 180;
+        const cosA = Math.cos(angle);
+        const sinA = Math.sin(angle);
+
+        let rX = (halfWidth * 0.84) / Math.abs(cosA);
+        let rY = (halfHeight * 0.84) / Math.abs(sinA);
+
+        if (Math.abs(cosA) < 0.0001) rX = Infinity;
+        if (Math.abs(sinA) < 0.0001) rY = Infinity;
+
+        const r = Math.min(rX, rY);
+        let hourOffset = r * 0.2;
+
+        const x1 = cosA * r;
+        const y1 = sinA * r;
+        const x2 = cosA * (r - hourOffset);
+        const y2 = sinA * (r - hourOffset);
+
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', x1);
+        line.setAttribute('y1', y1);
+        line.setAttribute('x2', x2);
+        line.setAttribute('y2', y2);
+        line.setAttribute('stroke', 'var(--dark-color)');
+        line.setAttribute('stroke-width', '4');
+        line.setAttribute('stroke-linecap', 'round');
+        line.setAttribute('opacity', '0.85');
+
+        hourGroup.appendChild(line);
+      }
+    }
+
+    ////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////
 
     // toggle between diffenent clocks
     if (data.clockType === 'circular' && data.timer === 'currenttime') {
@@ -626,6 +753,7 @@ editForm.addEventListener('submit', async (e) => {
   } 
 
   ////////////////////////////////////////////////////////////////////////
+  console.log('current mode: ' + mode);
   try {
     await updateDoc(doc(db, 'rooms', auth.currentUser.uid), {
       mediaLink: payload.mediaLink,
@@ -635,6 +763,7 @@ editForm.addEventListener('submit', async (e) => {
       theme: payload.theme==="magic+magic+magic"?`magic+magic+magic+${Math.random()}`:payload.theme,
       timer: payload.timer,
       timeForTimer: calculateSecondsForTimer(),
+      pausedSecondsTimer: mode==='timegoesdown'?calculateSecondsForTimer():pausedSecondsTimer,
       timerStatus: 'start', // auto switch to start
       clockType: payload.clockType,
       updater: Math.random() // 🟣🟣🟣 it always uploads something unique !!!
