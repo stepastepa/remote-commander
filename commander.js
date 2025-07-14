@@ -860,21 +860,6 @@ async function activateRoomType(selectedType) {
 // toggle with swipes
 swipeListener(
   () => {
-    console.log('Свайп влево!');
-    if(timerBtn.classList.contains('active')) {
-      timerBtn.classList.remove('active');
-      galleryBtn.classList.add('active');
-    } else if (galleryBtn.classList.contains('active')) {
-      galleryBtn.classList.remove('active');
-      messageBtn.classList.add('active');
-    } else if (messageBtn.classList.contains('active')) {
-      messageBtn.classList.remove('active');
-      timerBtn.classList.add('active');
-    }
-
-    activateRoomType(getSelectedType());
-  },
-  () => {
     console.log('Свайп вправо!');
     if(timerBtn.classList.contains('active')) {
       timerBtn.classList.remove('active');
@@ -885,6 +870,21 @@ swipeListener(
     } else if (messageBtn.classList.contains('active')) {
       messageBtn.classList.remove('active');
       galleryBtn.classList.add('active');
+    }
+
+    activateRoomType(getSelectedType());
+  },
+  () => {
+    console.log('Свайп влево!');
+    if(timerBtn.classList.contains('active')) {
+      timerBtn.classList.remove('active');
+      galleryBtn.classList.add('active');
+    } else if (galleryBtn.classList.contains('active')) {
+      galleryBtn.classList.remove('active');
+      messageBtn.classList.add('active');
+    } else if (messageBtn.classList.contains('active')) {
+      messageBtn.classList.remove('active');
+      timerBtn.classList.add('active');
     }
 
     activateRoomType(getSelectedType());
