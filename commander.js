@@ -219,7 +219,7 @@ onAuthStateChanged(auth, async (user) => {
     circularImageGroup.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" class="circular-clock" width="100%" height="100%" viewBox="-100 -100 200 200">
         <defs>
-          <filter id="shadowCirc" x="-100" y="-100" width="200" height="200" filterUnits="objectBoundingBox">
+          <filter id="shadowCirc" x="-100%" y="-100%" width="300%" height="300%" filterUnits="objectBoundingBox">
             <feDropShadow dx="0.2" dy="1" stdDeviation="1" flood-color="black" flood-opacity="0.4"/>
           </filter>
         </defs>
