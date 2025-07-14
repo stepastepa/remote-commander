@@ -1,0 +1,17 @@
+#timerImageGroup {
+  font-family: "ClockFont", sans-serif;
+}
+
+#bgFillBack {
+  fill: var(--body-bg);
+}
+#timerTextBack {
+  fill: var(--dark-color);
+}
+
+#bgFillFront {
+  fill: var(--message-bg);
+}
+#timerTextFront {
+  fill: var(--font-color);
+}

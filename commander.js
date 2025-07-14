@@ -181,26 +181,37 @@ onAuthStateChanged(auth, async (user) => {
     timerImageGroup.innerHTML = ''; // reset
     timerImageGroup.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" class="numeric-clock" width="100%" height="100%" viewBox="-24 -24 48 48">
-        <defs>
-          <filter id="shadowNum">
-            <feDropShadow dx="0.25" dy="0.25" stdDeviation="0.25" flood-color="black" flood-opacity="0.4"/>
-          </filter>
-        </defs>
+        <mask id="maskGroup">
+          <rect fill="black" x="-50%" y="-50%" width="100%" height="100%"/>
+        <rect id="maskTimer" fill="white" x="-50%" y="-50%" width="100%" height="100%"/>
+        </mask>
 
-        <g fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadowNum)">
-          <rect x="-40%" y="-30%" width="80%" height="60%" rx="2" ry="2" stroke="none" fill="var(--message-bg)" stroke-width="1"></rect>
+        <g id="timerBackGroup">
+          <rect id="bgFillBack" x="-50%" y="-50%" width="100%" height="100%" stroke="none"></rect>
           <text
-            id="timerText"
-            x="0"
-            y="0"
-            font-size="10"
-            font-weight="bold"
-            text-anchor="middle"
-            dominant-baseline="middle"
-            font-family="monospace"
-            fill="var(--font-color)"
-            stroke="none"
+              id="timerTextBack"
+              x="0"
+              y="0"
+              font-size="18"
+              font-weight="normal"
+              text-anchor="middle"
+              dominant-baseline="middle"
+              stroke="none"
           >00:00</text>
+        </g>
+
+        <g id="timerFrontGroup" mask="url(#maskGroup)">
+          <rect id="bgFillFront" x="-50%" y="-50%" width="100%" height="100%" stroke="none"></rect>
+          <text
+              id="timerTextFront"
+              x="0"
+              y="0"
+              font-size="18"
+              font-weight="normal"
+              text-anchor="middle"
+              dominant-baseline="middle"
+              stroke="none"
+          ><00:00></text>
         </g>
       </svg>
     `;
@@ -1047,8 +1058,12 @@ function start(xxx, yyy, ttt) {
   isRunning = true;
 
   if (mode === 'currenttime') {
-    updateClock();
-    intervalId = setInterval(updateClock, 1000);
+    // smooth (60fps)
+    intervalId = requestAnimationFrame(updateClock);
+
+    // steps (per second)
+    // updateClock();
+    // intervalId = setInterval(updateClock, 1000);
   } else {
     // retrieve current seconds from firebase:
     secondsPassed = xxx;
@@ -1074,6 +1089,7 @@ function start(xxx, yyy, ttt) {
 
 function pause() {
   isRunning = false;
+  cancelAnimationFrame(intervalId);
   clearInterval(intervalId);
   intervalId = null;
 }
@@ -1091,17 +1107,22 @@ function updateDisplay() {
   const minutes = Math.floor(secondsPassed / 60).toString().padStart(2, '0');
   const seconds = (secondsPassed % 60).toString().padStart(2, '0');
   display = `${minutes}:${seconds}`;
-  timerText.textContent = display;
+  timerTextFront.textContent = display;
 }
 
 function updateClock() {
   const now = new Date();
   const h = now.getHours().toString().padStart(2, '0');
   const m = now.getMinutes().toString().padStart(2, '0');
-  timerText.textContent = `${h}:${m}`;
+  timerTextFront.textContent = `${h}:${m}`;
+  timerTextBack.textContent = `${h}:${m}`;
   // clock with seconds
   // const s = now.getSeconds().toString().padStart(2, '0');
   // timerText.textContent = `${h}:${m}:${s}`;
+  const s = now.getSeconds() + now.getMilliseconds() / 1000; // smooth
+  maskTimer.setAttribute('height', `${s*(100/60)}%`);
+
+  intervalId = requestAnimationFrame(updateClock); // 60fps
 }
 
 ///////////////////////////////
