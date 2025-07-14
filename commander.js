@@ -180,8 +180,14 @@ onAuthStateChanged(auth, async (user) => {
     /////////// 🟡🟡🟡 timer card HTML setup 🟡🟡🟡 ///////////
     timerImageGroup.innerHTML = ''; // reset
     timerImageGroup.innerHTML = `
-      <svg class="numeric-clock" width="100%" height="100%" viewBox="-24 -24 48 48">
-        <g fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg xmlns="http://www.w3.org/2000/svg" class="numeric-clock" width="100%" height="100%" viewBox="-24 -24 48 48">
+        <defs>
+          <filter id="shadowNum">
+            <feDropShadow dx="0.25" dy="0.25" stdDeviation="0.25" flood-color="black" flood-opacity="0.4"/>
+          </filter>
+        </defs>
+
+        <g fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadowNum)">
           <rect x="-40%" y="-30%" width="80%" height="60%" rx="2" ry="2" stroke="none" fill="var(--message-bg)" stroke-width="1"></rect>
           <text
             id="timerText"
@@ -200,9 +206,13 @@ onAuthStateChanged(auth, async (user) => {
     `;
     circularImageGroup.innerHTML = ''; // reset
     circularImageGroup.innerHTML = `
-      <svg class="circular-clock" width="100%" height="100%" viewBox="-100 -100 200 200">
-        <!-- <circle class="minute-markers" cx="0" cy="0" r="95" pathlength="60"/>
-        <circle class="hour-markers" cx="0" cy="0" r="90" pathlength="60"/> -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="circular-clock" width="100%" height="100%" viewBox="-100 -100 200 200">
+        <defs>
+          <filter id="shadowCirc" x="-50%" y="-50%" width="200%" height="200%"
+          filterUnits="objectBoundingBox">
+            <feDropShadow dx="0.2" dy="1" stdDeviation="1" flood-color="black" flood-opacity="0.4"/>
+          </filter>
+        </defs>
 
         <g class="minute-markers-group">
 

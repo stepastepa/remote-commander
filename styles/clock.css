@@ -4,7 +4,7 @@
   --accent: rgb(255, 63, 20);
 
   --v: rgb(20, 118, 255);
-  font-family: "Hubballi", sans-serif;
+  font-family: "ClockFont", sans-serif;
 }
 
 /* .minute-markers {
@@ -48,10 +48,9 @@
   text-anchor: middle;
   cursor: pointer;
   user-select: none;
-  font-weight: normal;
-  stroke: var(--dark-color);
-  stroke-width: 1;
-  font-size: 20px;
+  stroke: none;
+  stroke-width: 0;
+  font-size: 16px;
   opacity: 0.85;
 }
 
@@ -70,7 +69,9 @@
 }
 
 #shadowGroupHour, #shadowGroupMinute {
-  filter: drop-shadow(0.5px 1px 1px hsl(0deg 0% 0% / 0.4));
+  /* filter: drop-shadow(0.5px 1px 1px hsl(0deg 0% 0% / 0.4)); */
+  /* filter: drop-shadow(0.5px 1px 1px rgba(0, 0, 0, 0.4)); */
+  filter: url(#shadowCirc); /* to prevent SVG filter bug in Safari */
 }
 
 #hourHandInner .hand,
