@@ -11,6 +11,7 @@
   grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
   align-content: center;
   justify-content: center;
+  align-items: stretch;
 }
 #numericBackGroup {
   background-color: var(--body-bg);
