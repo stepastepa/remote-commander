@@ -1,17 +1,48 @@
 #timerImageGroup {
   font-family: "ClockFont", sans-serif;
+  position: fixed;
+  inset: 0;
+  --dynamic-mask: 50%;
+}
+#numericBackGroup, #numericFrontGroup {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  align-content: center;
+  justify-content: center;
+}
+#numericBackGroup {
+  background-color: var(--body-bg);
+}
+#numericFrontGroup {
+  background-color: var(--message-bg);
+  mask-image: linear-gradient(
+		to bottom,
+		transparent 0,
+		transparent var(--dynamic-mask),
+		black var(--dynamic-mask),
+		black 100%
+	);
+	-webkit-mask-image: linear-gradient(
+		to bottom,
+		transparent 0,
+		transparent var(--dynamic-mask),
+		black var(--dynamic-mask),
+		black 100%
+	);
 }
 
-#bgFillBack {
-  fill: var(--body-bg);
-}
-#timerTextBack {
+.timerTextBack {
   fill: var(--dark-color);
+  font-size: 28px;
+  dominant-baseline: middle;
+  text-anchor: middle;
 }
 
-#bgFillFront {
-  fill: var(--message-bg);
-}
-#timerTextFront {
+.timerTextFront {
   fill: var(--font-color);
+  font-size: 28px;
+  dominant-baseline: middle;
+  text-anchor: middle;
 }

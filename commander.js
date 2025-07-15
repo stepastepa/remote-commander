@@ -178,6 +178,7 @@ onAuthStateChanged(auth, async (user) => {
     }
 
     /////////// 🟡🟡🟡 timer card HTML setup 🟡🟡🟡 ///////////
+    /*
     timerImageGroup.innerHTML = ''; // reset
     timerImageGroup.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" class="numeric-clock" width="100%" height="100%" viewBox="-24 -24 48 48">
@@ -188,33 +189,31 @@ onAuthStateChanged(auth, async (user) => {
 
         <g id="timerBackGroup">
           <rect id="bgFillBack" x="-50%" y="-50%" width="100%" height="100%" stroke="none"></rect>
-          <text
-              id="timerTextBack"
-              x="0"
-              y="0"
-              font-size="18"
-              font-weight="normal"
-              text-anchor="middle"
-              dominant-baseline="middle"
-              stroke="none"
-          >00:00</text>
+          <g id="firstGroupBack">
+            <text class="timerTextBack" id="firstNumberBack" x="-11%" y="0">0</text>
+            <text class="timerTextBack" id="secondNumberBack" x="11%" y="0">0</text>
+          </g>
+          <g id="secondGroupBack">
+            <text class="timerTextBack" id="thirdNumberBack" x="-11%" y="0">0</text>
+            <text class="timerTextBack" id="fourthNumberBack" x="11%" y="0">0</text>
+          </g>
         </g>
 
         <g id="timerFrontGroup" mask="url(#maskGroup)">
           <rect id="bgFillFront" x="-50%" y="-50%" width="100%" height="100%" stroke="none"></rect>
-          <text
-              id="timerTextFront"
-              x="0"
-              y="0"
-              font-size="18"
-              font-weight="normal"
-              text-anchor="middle"
-              dominant-baseline="middle"
-              stroke="none"
-          ><00:00></text>
+          <g id="firstGroupFront">
+            <text class="timerTextFront" id="firstNumberFront" x="-11%" y="0">0</text>
+            <text class="timerTextFront" id="secondNumberFront" x="11%" y="0">0</text>
+          </g>
+          <g id="secondGroupFront">
+            <text class="timerTextFront" id="thirdNumberFront" x="-11%" y="0">0</text>
+            <text class="timerTextFront" id="fourthNumberFront" x="11%" y="0">0</text>
+          </g>
         </g>
       </svg>
     `;
+    */
+
     circularImageGroup.innerHTML = ''; // reset
     circularImageGroup.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" class="circular-clock" width="100%" height="100%" viewBox="-100 -100 200 200">
@@ -298,7 +297,7 @@ onAuthStateChanged(auth, async (user) => {
       createMarkers(minuteGroup, hourGroup, width, height);
     }
 
-    setViewboxAndDrawClock(timerImageGroup.querySelector('svg'), 48);
+    // setViewboxAndDrawClock(timerImageGroup.querySelector('svg'), 48);
     setViewboxAndDrawClock(circularImageGroup.querySelector('svg'), 200);
 
     ///////////// циферблат формируем /////////////
@@ -1105,21 +1104,43 @@ function updateDisplay() {
   if (mode === 'currenttime') return; // часы обновляются отдельно
   const minutes = Math.floor(secondsPassed / 60).toString().padStart(2, '0');
   const seconds = (secondsPassed % 60).toString().padStart(2, '0');
-  display = `${minutes}:${seconds}`;
-  timerTextFront.textContent = display;
+
+  firstNumberBack.textContent = minutes[0];
+  secondNumberBack.textContent = minutes[1];
+  thirdNumberBack.textContent = seconds[0];
+  fourthNumberBack.textContent = seconds[1];
+
+  firstNumberFront.textContent = minutes[0];
+  secondNumberFront.textContent = minutes[1];
+  thirdNumberFront.textContent = seconds[0];
+  fourthNumberFront.textContent = seconds[1];
+
+  // timerImageGroup.setAttribute('style', `--dynamic-mask: ${seconds*(100/60)}%`);
+  timerImageGroup.setAttribute('style', `--dynamic-mask: 0%`);
 }
 
 function updateClock() {
   const now = new Date();
-  const h = now.getHours().toString().padStart(2, '0');
-  const m = now.getMinutes().toString().padStart(2, '0');
-  timerTextFront.textContent = `${h}:${m}`;
-  timerTextBack.textContent = `${h}:${m}`;
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  // timerTextFront.textContent = `${hours}:${minutes}`;
+  // timerTextBack.textContent = `${hours}:${minutes}`;
+
+  firstNumberBack.textContent = hours[0];
+  secondNumberBack.textContent = hours[1];
+  thirdNumberBack.textContent = minutes[0];
+  fourthNumberBack.textContent = minutes[1];
+
+  firstNumberFront.textContent = hours[0];
+  secondNumberFront.textContent = hours[1];
+  thirdNumberFront.textContent = minutes[0];
+  fourthNumberFront.textContent = minutes[1];
+
   // clock with seconds
   // const s = now.getSeconds().toString().padStart(2, '0');
   // timerText.textContent = `${h}:${m}:${s}`;
-  const s = now.getSeconds() + now.getMilliseconds() / 1000; // smooth
-  maskTimer.setAttribute('height', `${s*(100/60)}%`);
+  const seconds = now.getSeconds() + now.getMilliseconds() / 1000; // smooth
+  timerImageGroup.setAttribute('style', `--dynamic-mask: ${seconds*(100/60)}%`);
 
   intervalId = requestAnimationFrame(updateClock); // 60fps
 }
