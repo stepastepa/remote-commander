@@ -7,11 +7,6 @@
 #numericBackGroup, #numericFrontGroup {
   position: absolute;
   inset: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
-  align-content: center;
-  justify-content: center;
-  align-items: stretch;
 }
 #numericBackGroup {
   background-color: var(--body-bg);
@@ -34,6 +29,25 @@
 	);
 }
 
+.numeric-block-first,
+.numeric-block-second {
+  position: absolute;
+  max-height: 50vh;
+  max-height: 50dvh;
+  width: 100vw;
+  top: 50vh;
+  top: 50dvh;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.numeric-block-first {
+  transform: translate(-50%, -100%);
+}
+.numeric-block-second {
+  transform: translate(-50%, 0%);
+}
+
+
 .timerTextBack {
   fill: var(--dark-color);
   font-size: 28px;
@@ -46,4 +60,28 @@
   font-size: 28px;
   dominant-baseline: middle;
   text-anchor: middle;
+}
+
+@media (min-width: 640px) {
+  .numeric-block-first,
+  .numeric-block-second {
+    position: absolute;
+    max-height: 100vh;
+    max-height: 100dvh;
+    height: 100vh;
+    height: 100dvh;
+    width: fit-content;
+    max-width: 50vw;
+    
+    top: 50vh;
+    top: 50dvh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .numeric-block-first {
+    transform: translate(-100%, -50%);
+  }
+  .numeric-block-second {
+    transform: translate(0%, -50%);
+  }
 }
