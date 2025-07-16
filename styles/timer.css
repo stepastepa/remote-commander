@@ -70,7 +70,7 @@
     max-height: 100dvh;
     height: 100vh;
     height: 100dvh;
-    width: fit-content;
+    width: auto;
     max-width: 50vw;
     
     top: 50vh;
