@@ -775,7 +775,7 @@ editForm.addEventListener('submit', async (e) => {
       message: payload.message,
       numberOfSlides: payload.numberOfSlides,
       slidesLinks: galleryData,
-      theme: payload.theme==="magic+magic+magic"?`magic+magic+magic+${Math.random()}`:payload.theme,
+      theme: payload.theme==="magic+magic+magic"?`magic+magic+magic+${Math.random()}`:payload.theme.toLowerCase(),
       timer: payload.timer,
       timeForTimer: calculateSecondsForTimer(),
       pausedSecondsTimer: mode==='timegoesdown'?calculateSecondsForTimer():pausedSecondsTimer,
