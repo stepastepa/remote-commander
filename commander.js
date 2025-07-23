@@ -470,7 +470,9 @@ onAuthStateChanged(auth, async (user) => {
     }
 
     // color theme setup
-    let themeColors = data.theme.split('+');
+    let themeColors = data.theme.toLowerCase();
+    // console.log(themeColors);
+    themeColors = data.theme.split('+');
     let bodyBg = '#'+themeColors[0];
     let messageBg = '#'+themeColors[1];
     let fontColor = '#'+themeColors[2];
@@ -491,7 +493,7 @@ onAuthStateChanged(auth, async (user) => {
 
     ////////////////////////////////////////////////////
     // modify some themes for circular clock
-    if ((messageBg === '#ffffff' || messageBg === '#FFFFFF') && (bodyBg === '#f3f3f6')) {
+    if ((messageBg === '#ffffff') && (bodyBg === '#f3f3f6')) {
       // stroke effect visible
       // hourHandStroke.classList.remove('hidden');
       // minHandStroke.classList.remove('hidden');
@@ -512,13 +514,13 @@ onAuthStateChanged(auth, async (user) => {
       //
     }
 
-    if (bodyBg === '#8E8E93') {
+    if (bodyBg === '#8e8e93') {
       // golden accent for darkish bg color theme
       circularImageGroup.style.setProperty('--accent', 'gold');
-    } else if (messageBg === '#FF2D55') {
+    } else if (messageBg === '#ff2d55') {
       // green accent for reddish hand color theme
       circularImageGroup.style.setProperty('--accent', 'rgb(67, 220, 17)');
-    } else if (messageBg === '#FFCC00') {
+    } else if (messageBg === '#ffcc00') {
       // blue accent for yellowish hand color theme
       circularImageGroup.style.setProperty('--accent', 'rgb(20, 118, 255)');
     } else {
@@ -555,7 +557,7 @@ onAuthStateChanged(auth, async (user) => {
     } else {
       themesInputs.forEach((el) => {
         el.removeAttribute('checked'); // reset theme inputs
-        if(el.value === data.theme) {
+        if(el.value.toLowerCase() === data.theme.toLowerCase()) {
           el.setAttribute('checked', '');
         }
       });
