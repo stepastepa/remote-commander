@@ -472,7 +472,7 @@ onAuthStateChanged(auth, async (user) => {
     // color theme setup
     let themeColors = data.theme.toLowerCase();
     // console.log(themeColors);
-    themeColors = data.theme.split('+');
+    themeColors = themeColors.split('+');
     let bodyBg = '#'+themeColors[0];
     let messageBg = '#'+themeColors[1];
     let fontColor = '#'+themeColors[2];
@@ -493,26 +493,6 @@ onAuthStateChanged(auth, async (user) => {
 
     ////////////////////////////////////////////////////
     // modify some themes for circular clock
-    if ((messageBg === '#ffffff') && (bodyBg === '#f3f3f6')) {
-      // stroke effect visible
-      // hourHandStroke.classList.remove('hidden');
-      // minHandStroke.classList.remove('hidden');
-      // dark clock hands
-      // hourHand.querySelectorAll('.hand').forEach((el)=>{el.style.stroke = "var(--marker)"});
-      // minHand.querySelectorAll('.hand').forEach((el)=>{el.style.stroke = "var(--marker)"});
-    } else {
-      // stroke effect hidden
-      // hourHandStroke.classList.add('hidden');
-      // minHandStroke.classList.add('hidden');
-    }
-    
-    if (bodyBg === '#f3f3f6') {
-      // dark markers (1 ряд)
-      // document.querySelector('.minute-markers').style.stroke = "var(--dark-color)";
-      // document.querySelector('.hour-markers').style.stroke = "var(--dark-color)"; 
-    } else {
-      //
-    }
 
     if (bodyBg === '#8e8e93') {
       // golden accent for darkish bg color theme
@@ -525,6 +505,20 @@ onAuthStateChanged(auth, async (user) => {
       circularImageGroup.style.setProperty('--accent', 'rgb(20, 118, 255)');
     } else {
       circularImageGroup.removeAttribute('style');
+    }
+
+    ////////////////////////////////////////////////////
+    // modify some themes for numeric clock
+
+    if(data.timer !== 'currenttime') {
+      if (bodyBg === '#8e8e93' || bodyBg === '#6ea5d0' || bodyBg === '#a7d29a' || bodyBg === '#f5d261') {
+        timerImageGroup.querySelector('#numericFrontGroup').style.setProperty('--font-color', '#191919');
+        timerImageGroup.querySelector('#numericFrontGroup').style.setProperty('--message-bg', bodyBg);
+      } else {
+        timerImageGroup.querySelector('#numericFrontGroup').removeAttribute('style');
+      }
+    } else {
+      timerImageGroup.querySelector('#numericFrontGroup').removeAttribute('style');
     }
 
     ////////////////////////////////////////////////////
