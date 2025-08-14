@@ -1236,7 +1236,7 @@ function setupCircularClock() {
     const sec = date.getSeconds() + date.getMilliseconds() / 1000; // плавный ход
 
     clockText.textContent = showDate ? `${dayName} ${day}` : amPm;
-    // hourHand.setAttribute('transform', `rotate(${(360 / 12) * hour})`);
+    hourHand.setAttribute('transform', `rotate(${(360 / 12) * hour})`);
     minHand.setAttribute('transform', `rotate(${(360 / 60) * min})`);
     secHand.setAttribute('transform', `rotate(${(360 / 60) * sec})`);
 
