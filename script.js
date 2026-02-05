@@ -31,7 +31,7 @@ import {
 } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyClOhEXpKSOHjyhdXm9vrWi-XvBPP8OpJM",
+  apiKey: "AIzaSyB6YTkcCFPUniq-pMIj-yY4-mO3q4DIjYE",
   authDomain: "remote-commander-d4f53.firebaseapp.com",
   projectId: "remote-commander-d4f53",
   storageBucket: "remote-commander-d4f53.firebasestorage.app",
